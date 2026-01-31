@@ -46,6 +46,7 @@ export function AddressInput({ form, prefix, showAutocomplete = false }: Address
             <FormControl>
               <Input
                 {...field}
+                value={field.value as string}
                 placeholder="123 Main Street"
                 aria-required="true"
               />
@@ -68,6 +69,7 @@ export function AddressInput({ form, prefix, showAutocomplete = false }: Address
               <FormControl>
                 <Input
                   {...field}
+                  value={field.value as string}
                   placeholder="New York"
                   aria-required="true"
                 />
@@ -85,7 +87,7 @@ export function AddressInput({ form, prefix, showAutocomplete = false }: Address
               <FormLabel>
                 State <span className="text-destructive">*</span>
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value as string}>
                 <FormControl>
                   <SelectTrigger aria-required="true">
                     <SelectValue placeholder="Select state" />
@@ -117,6 +119,7 @@ export function AddressInput({ form, prefix, showAutocomplete = false }: Address
             <FormControl>
               <Input
                 {...field}
+                value={field.value as string}
                 placeholder="12345 or 12345-6789"
                 aria-required="true"
                 onChange={(e) => {

@@ -68,31 +68,13 @@ export interface SiteFormData {
 // Zod schema for site form validation
 export const siteFormSchema = z.object({
   // Required fields with validation messages
-  siteNumber: z.string({
-    required_error: "Site number is required",
-    invalid_type_error: "Site number is required",
-  }).min(1, "Site number is required"),
-  siteName: z.string({
-    required_error: "Site name is required",
-    invalid_type_error: "Site name is required",
-  }).min(1, "Site name is required"),
-  siteAddress1: z.string({
-    required_error: "Site address is required",
-    invalid_type_error: "Site address is required",
-  }).min(1, "Site address is required"),
+  siteNumber: z.string({ message: "Site number is required" }).min(1, "Site number is required"),
+  siteName: z.string({ message: "Site name is required" }).min(1, "Site name is required"),
+  siteAddress1: z.string({ message: "Site address is required" }).min(1, "Site address is required"),
   siteAddress2: z.string().optional(),
-  siteCity: z.string({
-    required_error: "City is required",
-    invalid_type_error: "City is required",
-  }).min(1, "City is required"),
-  siteState: z.string({
-    required_error: "State is required",
-    invalid_type_error: "State is required",
-  }).length(2, "State must be exactly 2 characters"),
-  siteZipcode: z.string({
-    required_error: "ZIP code is required",
-    invalid_type_error: "ZIP code is required",
-  }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
+  siteCity: z.string({ message: "City is required" }).min(1, "City is required"),
+  siteState: z.string({ message: "State is required" }).length(2, "State must be exactly 2 characters"),
+  siteZipcode: z.string({ message: "ZIP code is required" }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
   
   // Conditional billing fields
   hasDifferentBillingAddress: z.boolean(),

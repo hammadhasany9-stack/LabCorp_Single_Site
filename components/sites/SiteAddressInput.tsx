@@ -49,6 +49,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
             <FormControl>
               <Input
                 {...field}
+                value={field.value as string}
                 placeholder="123 Main Street"
                 aria-required="true"
               />
@@ -68,6 +69,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
             <FormControl>
               <Input
                 {...field}
+                value={(field.value as string) || ''}
                 placeholder="Suite, Floor, etc. (optional)"
               />
             </FormControl>
@@ -89,6 +91,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
               <FormControl>
                 <Input
                   {...field}
+                  value={field.value as string}
                   placeholder="New York"
                   aria-required="true"
                 />
@@ -106,7 +109,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
               <FormLabel>
                 State <span className="text-destructive">*</span>
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value as string}>
                 <FormControl>
                   <SelectTrigger aria-required="true">
                     <SelectValue placeholder="Select state" />
@@ -138,6 +141,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
             <FormControl>
               <Input
                 {...field}
+                value={field.value as string}
                 placeholder="12345 or 12345-6789"
                 aria-required="true"
                 onChange={(e) => {
@@ -161,7 +165,7 @@ export function SiteAddressInput({ form, prefix, includeCountry = false }: SiteA
               <FormLabel>
                 Country <span className="text-destructive">*</span>
               </FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value as string}>
                 <FormControl>
                   <SelectTrigger aria-required="true">
                     <SelectValue placeholder="Select country" />

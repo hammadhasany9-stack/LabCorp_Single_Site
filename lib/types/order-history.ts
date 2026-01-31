@@ -8,7 +8,7 @@ export interface OrderHistoryItem {
   status: 'in_progress' | 'shipped' | 'cancelled'
   customerId: string // Associated customer ID
   orderDate: Date
-  orderTime: Timestamp
+  orderTime?: Timestamp
   shippedDate?: Date
   shippedTime?: Timestamp
   kitId: string

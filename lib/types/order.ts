@@ -49,74 +49,29 @@ export const orderSchema = z.object({
   quantity: z.number().optional(),
   
   // Client Details - Required fields
-  planName: z.string({
-    required_error: "Plan name is required",
-    invalid_type_error: "Plan name is required",
-  }).min(1, "Plan name is required"),
-  clientAddress: z.string({
-    required_error: "Client address is required",
-    invalid_type_error: "Client address is required",
-  }).min(1, "Client address is required"),
-  clientCity: z.string({
-    required_error: "City is required",
-    invalid_type_error: "City is required",
-  }).min(1, "City is required"),
-  clientState: z.string({
-    required_error: "State is required",
-    invalid_type_error: "State is required",
-  }).length(2, "State must be exactly 2 characters"),
-  clientZip: z.string({
-    required_error: "ZIP code is required",
-    invalid_type_error: "ZIP code is required",
-  }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
+  planName: z.string({ message: "Plan name is required" }).min(1, "Plan name is required"),
+  clientAddress: z.string({ message: "Client address is required" }).min(1, "Client address is required"),
+  clientCity: z.string({ message: "City is required" }).min(1, "City is required"),
+  clientState: z.string({ message: "State is required" }).length(2, "State must be exactly 2 characters"),
+  clientZip: z.string({ message: "ZIP code is required" }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
   
   // Contact validation with phone format
-  contactName: z.string({
-    required_error: "Contact name is required",
-    invalid_type_error: "Contact name is required",
-  }).min(1, "Contact name is required"),
-  contactPhone: z.string({
-    required_error: "Phone number is required",
-    invalid_type_error: "Phone number is required",
-  }).regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Invalid phone format. Use: (555) 123-4567"),
+  contactName: z.string({ message: "Contact name is required" }).min(1, "Contact name is required"),
+  contactPhone: z.string({ message: "Phone number is required" }).regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Invalid phone format. Use: (555) 123-4567"),
   contactAddress: z.string().optional(),
   specialInstructions: z.string().optional(),
   
   // Order details with business logic
-  mailDate: z.date({
-    required_error: "Mail date is required",
-    invalid_type_error: "Mail date is required",
-  }),
-  labTicketRef: z.string({
-    required_error: "Lab ticket reference is required",
-    invalid_type_error: "Lab ticket reference is required",
-  }).min(1, "Lab ticket reference is required"),
-  kitName: z.string({
-    required_error: "Kit name is required",
-    invalid_type_error: "Kit name is required",
-  }).min(1, "Kit name is required"),
-  volume: z.number({
-    required_error: "Volume is required",
-    invalid_type_error: "Volume must be a number",
-  }).min(1, "Volume must be at least 1").max(10000, "Volume cannot exceed 10,000"),
+  mailDate: z.date({ message: "Mail date is required" }),
+  labTicketRef: z.string({ message: "Lab ticket reference is required" }).min(1, "Lab ticket reference is required"),
+  kitName: z.string({ message: "Kit name is required" }).min(1, "Kit name is required"),
+  volume: z.number({ message: "Volume must be a number" }).min(1, "Volume must be at least 1").max(10000, "Volume cannot exceed 10,000"),
   
   // Return address
-  returnAddress: z.string({
-    required_error: "Return address is required",
-    invalid_type_error: "Return address is required",
-  }).min(1, "Return address is required"),
-  returnCity: z.string({
-    required_error: "Return city is required",
-    invalid_type_error: "Return city is required",
-  }).min(1, "Return city is required"),
-  returnState: z.string({
-    required_error: "Return state is required",
-    invalid_type_error: "Return state is required",
-  }).length(2, "State must be exactly 2 characters"),
-  returnZip: z.string({
-    required_error: "Return ZIP code is required",
-    invalid_type_error: "Return ZIP code is required",
-  }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
+  returnAddress: z.string({ message: "Return address is required" }).min(1, "Return address is required"),
+  returnCity: z.string({ message: "Return city is required" }).min(1, "Return city is required"),
+  returnState: z.string({ message: "Return state is required" }).length(2, "State must be exactly 2 characters"),
+  returnZip: z.string({ message: "Return ZIP code is required" }).regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format. Use: 12345 or 12345-6789"),
 }).refine((data) => {
   // If custom requisition is enabled, validate required fields
   if (data.customRequisition) {

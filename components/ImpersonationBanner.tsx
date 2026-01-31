@@ -26,7 +26,7 @@ export function ImpersonationBanner() {
       if (user && customer) {
         logImpersonationEnd(
           user.id,
-          user.name,
+          user.name || user.email || 'Unknown Admin',
           customer.customerId,
           customer.customerName
         )

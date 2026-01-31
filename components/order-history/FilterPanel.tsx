@@ -154,32 +154,6 @@ export function FilterPanel({
               onChange={(e) => updateFilter('trackingId', e.target.value)}
             />
           </div>
-
-          {/* Kit ID */}
-          <div className="space-y-2">
-            <Label htmlFor="kitId" className="text-sm font-semibold">
-              Kit ID
-            </Label>
-            <Input
-              id="kitId"
-              placeholder="Enter kit ID"
-              value={localFilters.kitId || ''}
-              onChange={(e) => updateFilter('kitId', e.target.value)}
-            />
-          </div>
-
-          {/* Kit Name */}
-          <div className="space-y-2">
-            <Label htmlFor="kitName" className="text-sm font-semibold">
-              Kit Name
-            </Label>
-            <Input
-              id="kitName"
-              placeholder="Enter kit name"
-              value={localFilters.kitName || ''}
-              onChange={(e) => updateFilter('kitName', e.target.value)}
-            />
-          </div>
         </div>
 
         {/* Action Buttons */}

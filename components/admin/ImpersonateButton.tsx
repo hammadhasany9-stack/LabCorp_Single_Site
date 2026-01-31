@@ -29,7 +29,7 @@ export function ImpersonateButton({ customer, destination = '/programs/single-si
       if (user) {
         logImpersonationStart(
           user.id,
-          user.name,
+          user.name || user.email || 'Unknown Admin',
           customer.customerId,
           customer.customerName
         )
