@@ -532,14 +532,22 @@ export const mockOrderDetailsDTP: OrderDetail[] = mockOrderHistoryDTP.map((order
 
 export function calculateOrderMetricsDTP(orders: OrderHistoryItem[]): OrderMetrics {
   const totalOrders = orders.length
-  const inProgress = orders.filter(order => order.status === 'in_progress').length
-  const shipped = orders.filter(order => order.status === 'shipped').length
-  const cancelled = orders.filter(order => order.status === 'cancelled').length
+  const ordersInProgress = orders.filter(order => order.status === 'in_progress').length
+  const ordersShipped = orders.filter(order => order.status === 'shipped').length
+  const ordersCancelled = orders.filter(order => order.status === 'cancelled').length
+  const totalPlans = new Set(orders.map(order => order.planName)).size
+  const ordersPlacedToday = orders.filter(order => {
+    const today = new Date()
+    const orderDate = new Date(order.orderDate)
+    return orderDate.toDateString() === today.toDateString()
+  }).length
 
   return {
     totalOrders,
-    inProgress,
-    shipped,
-    cancelled,
+    ordersInProgress,
+    ordersShipped,
+    ordersCancelled,
+    totalPlans,
+    ordersPlacedToday,
   }
 }
