@@ -1,4 +1,4 @@
-import { AuditLog, ImpersonationLog, ActionLog } from '@/lib/types/auditLog'
+import { AuditLog, ImpersonationLog, ActionLog, PatientDataAccessLog, PatientAccessReason } from '@/lib/types/auditLog'
 
 /**
  * Log impersonation start event
@@ -97,6 +97,43 @@ export function logImpersonatedAction(
 
   // Mock console logging (replace with real backend in production)
   console.log('[AUDIT LOG - Impersonated Action]', log)
+  
+  // In production, send to backend:
+  // await fetch('/api/audit-logs', { method: 'POST', body: JSON.stringify(log) })
+}
+
+/**
+ * Log patient data access event
+ * In production, this would send to a backend logging service
+ */
+export function logPatientDataAccess(
+  userId: string,
+  userEmail: string,
+  userName: string,
+  orderId: string,
+  accessReason: PatientAccessReason
+): void {
+  const log: PatientDataAccessLog = {
+    logId: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    timestamp: new Date(),
+    adminId: userId,
+    adminName: userName,
+    action: 'patient_data_access',
+    customerId: null,
+    customerName: null,
+    resource: `/programs/direct-to-patient/order-history/${orderId}`,
+    orderId,
+    accessReason,
+    userId,
+    userEmail,
+    details: {
+      message: `Admin ${userName} (${userEmail}) accessed patient data for order ${orderId}`,
+      reason: accessReason,
+    },
+  }
+
+  // Mock console logging (replace with real backend in production)
+  console.log('[AUDIT LOG - Patient Data Access]', log)
   
   // In production, send to backend:
   // await fetch('/api/audit-logs', { method: 'POST', body: JSON.stringify(log) })

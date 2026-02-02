@@ -8,9 +8,17 @@ export interface TrackingStep {
 export interface CustomRequisition {
   controlId: string
   inboundTrackingId: string
+  outboundTrackingId?: string  // Individual outbound tracking per patient
   carrierType?: string
   currentStatus?: TrackingStatus
   trackingSteps?: TrackingStep[]
+  // Patient information (Direct to Patient)
+  patientName?: string
+  patientDOB?: Date
+  patientAddress?: string
+  patientCity?: string
+  patientState?: string
+  patientZip?: string
   // Custom requisition fields from place order form
   fileNumber?: string
   sowNumber?: string
@@ -19,11 +27,14 @@ export interface CustomRequisition {
   productTypeLabel?: string
 }
 
+import { SiteGroup } from '@/lib/constants/siteGroups'
+
 export interface OrderDetail {
   // Basic Order Info
   orderId: string
   orderNo: string
   status: 'in_progress' | 'shipped' | 'cancelled'
+  siteGroup: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   customerId: string // Associated customer ID
   orderDate: Date
   dateApproved?: Date

@@ -124,8 +124,8 @@ export default function SitesPage() {
 
   // Check for new site from sessionStorage (after redirect from add page)
   useEffect(() => {
-    const newSiteData = sessionStorage.getItem('newSite_ss')
-    const showSuccess = sessionStorage.getItem('showSuccessMessage_ss')
+    const newSiteData = sessionStorage.getItem('newSite_dtp')
+    const showSuccess = sessionStorage.getItem('showSuccessMessage_dtp')
     
     if (newSiteData && showSuccess) {
       const newSite: Site = JSON.parse(newSiteData)
@@ -133,8 +133,8 @@ export default function SitesPage() {
       setShowSuccessMessage(true)
       
       // Clear sessionStorage
-      sessionStorage.removeItem('newSite_ss')
-      sessionStorage.removeItem('showSuccessMessage_ss')
+      sessionStorage.removeItem('newSite_dtp')
+      sessionStorage.removeItem('showSuccessMessage_dtp')
       
       // Hide success message after 5 seconds
       setTimeout(() => {
@@ -143,8 +143,8 @@ export default function SitesPage() {
     }
 
     // Check for updated site from sessionStorage (after redirect from edit page)
-    const updatedSiteData = sessionStorage.getItem('updatedSite_ss')
-    const showUpdateSuccess = sessionStorage.getItem('showUpdateSuccessMessage_ss')
+    const updatedSiteData = sessionStorage.getItem('updatedSite_dtp')
+    const showUpdateSuccess = sessionStorage.getItem('showUpdateSuccessMessage_dtp')
     
     if (updatedSiteData && showUpdateSuccess) {
       const updatedSite: Site = JSON.parse(updatedSiteData)
@@ -156,8 +156,8 @@ export default function SitesPage() {
       setShowUpdateSuccessMessage(true)
       
       // Clear sessionStorage
-      sessionStorage.removeItem('updatedSite_ss')
-      sessionStorage.removeItem('showUpdateSuccessMessage_ss')
+      sessionStorage.removeItem('updatedSite_dtp')
+      sessionStorage.removeItem('showUpdateSuccessMessage_dtp')
       
       // Hide success message after 5 seconds
       setTimeout(() => {
@@ -208,7 +208,7 @@ export default function SitesPage() {
   }
 
   const handleAddNewSite = () => {
-    router.push('/programs/single-site/sites/add')
+    router.push('/programs/direct-to-patient/sites/add')
   }
 
   const handleViewSite = (site: Site) => {

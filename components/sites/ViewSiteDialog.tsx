@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { AlertCircle } from "lucide-react"
+import { useSiteGroupContext } from "@/lib/hooks/useSiteGroupContext"
+import { SITE_GROUPS } from "@/lib/constants/siteGroups"
 
 interface ViewSiteDialogProps {
   site: Site | null
@@ -33,6 +35,7 @@ interface ViewSiteDialogProps {
 
 export function ViewSiteDialog({ site, open, onOpenChange }: ViewSiteDialogProps) {
   const router = useRouter()
+  const { currentSiteGroup } = useSiteGroupContext()
   
   if (!site) return null
 
@@ -47,7 +50,11 @@ export function ViewSiteDialog({ site, open, onOpenChange }: ViewSiteDialogProps
 
   const handleEdit = () => {
     onOpenChange(false)
-    router.push(`/programs/single-site/sites/edit/${site.id}`)
+    // Route to the correct portal based on current site group
+    const portalPath = currentSiteGroup === SITE_GROUPS.DIRECT_TO_PATIENT 
+      ? '/programs/direct-to-patient' 
+      : '/programs/single-site'
+    router.push(`${portalPath}/sites/edit/${site.id}`)
   }
 
   return (
@@ -76,7 +83,7 @@ export function ViewSiteDialog({ site, open, onOpenChange }: ViewSiteDialogProps
             <div className="space-y-2">
               <Label>Site Group</Label>
               <Input
-                value="Single Site"
+                value={site.siteGroup}
                 disabled
                 className="bg-gray-100 dark:bg-gray-800"
               />

@@ -19,14 +19,16 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { mockSites } from "@/lib/data/mockSites"
+import { getSitesBySiteGroup } from "@/lib/data"
 import { generateNextSiteNumber } from "@/lib/utils/siteHelpers"
 import { useSessionContext } from "@/lib/hooks/useSessionContext"
+import { useSiteGroupContext } from "@/lib/hooks/useSiteGroupContext"
 import { getCustomerContextForNewEntity } from "@/lib/utils/dataFilters"
 
 export default function AddSitePage() {
   const router = useRouter()
   const { activeCustomerId } = useSessionContext()
+  const { currentSiteGroup } = useSiteGroupContext()
   
   const form = useForm<SiteFormData>({
     resolver: zodResolver(siteFormSchema),
@@ -51,10 +53,11 @@ export default function AddSitePage() {
 
   // Auto-generate site number on mount
   useEffect(() => {
-    const nextSiteNumber = generateNextSiteNumber(mockSites)
+    const sites = getSitesBySiteGroup(currentSiteGroup)
+    const nextSiteNumber = generateNextSiteNumber(sites)
     form.setValue('siteNumber', nextSiteNumber)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [currentSiteGroup])
 
   const hasDifferentBillingAddress = form.watch('hasDifferentBillingAddress')
 
@@ -67,6 +70,7 @@ export default function AddSitePage() {
       const newSite: Site = {
         id: `site-${Date.now()}`,
         customerId, // Associate with current customer
+        siteGroup: currentSiteGroup, // Set site group based on portal context
         siteNumber: data.siteNumber,
         siteName: data.siteName,
         siteAddress1: data.siteAddress1,
@@ -89,8 +93,8 @@ export default function AddSitePage() {
 
       // In production, this would be an API call
       // For now, we'll store in sessionStorage to pass to the sites page
-      sessionStorage.setItem('newSite', JSON.stringify(newSite))
-      sessionStorage.setItem('showSuccessMessage', 'true')
+      sessionStorage.setItem('newSite_ss', JSON.stringify(newSite))
+      sessionStorage.setItem('showSuccessMessage_ss', 'true')
       
       // Redirect back to sites list
       router.push('/programs/single-site/sites')

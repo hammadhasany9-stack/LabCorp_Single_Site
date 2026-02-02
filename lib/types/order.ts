@@ -1,6 +1,8 @@
 import { z } from 'zod'
+import { SiteGroup } from '@/lib/constants/siteGroups'
 
 export interface OrderFormData {
+  siteGroup?: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   // Kit Section
   csvFile?: File
   customRequisition: boolean

@@ -20,6 +20,10 @@ interface ExpandableFiltersProps {
   onDateRangeChange: (range: { from?: Date; to?: Date }, preset?: DateRangePreset) => void
   kitType?: string
   onKitTypeChange: (kitType?: string) => void
+  planName?: string
+  onPlanNameChange: (planName?: string) => void
+  planNameOptions: string[]
+  showAdminFilters?: boolean
 }
 
 export function ExpandableFilters({ 
@@ -31,11 +35,17 @@ export function ExpandableFilters({
   dateRangePreset,
   onDateRangeChange,
   kitType,
-  onKitTypeChange
+  onKitTypeChange,
+  planName,
+  onPlanNameChange,
+  planNameOptions,
+  showAdminFilters = false
 }: ExpandableFiltersProps) {
   const [localFilters, setLocalFilters] = useState<OrderHistoryFilters>(filters)
   const [kitSearchQuery, setKitSearchQuery] = useState('')
   const [isKitDropdownOpen, setIsKitDropdownOpen] = useState(false)
+  const [planSearchQuery, setPlanSearchQuery] = useState('')
+  const [isPlanDropdownOpen, setIsPlanDropdownOpen] = useState(false)
   const [isDateDropdownOpen, setIsDateDropdownOpen] = useState(false)
   const [customDateFrom, setCustomDateFrom] = useState<Date | undefined>(dateRange?.from)
   const [customDateTo, setCustomDateTo] = useState<Date | undefined>(dateRange?.to)
@@ -43,6 +53,10 @@ export function ExpandableFilters({
   const filteredKitTypes = KIT_TYPE_OPTIONS.filter(kit =>
     kit.id.toLowerCase().includes(kitSearchQuery.toLowerCase()) ||
     kit.name.toLowerCase().includes(kitSearchQuery.toLowerCase())
+  )
+
+  const filteredPlanNames = planNameOptions.filter(plan =>
+    plan.toLowerCase().includes(planSearchQuery.toLowerCase())
   )
 
   const handleApply = () => {
@@ -199,6 +213,70 @@ export function ExpandableFilters({
             </PopoverContent>
           </Popover>
         </div>
+
+        {/* Plan Name Dropdown - Admin Only */}
+        {showAdminFilters && (
+          <div className="space-y-2">
+            <Label className="text-sm font-semibold">Plan Name</Label>
+            <Popover open={isPlanDropdownOpen} onOpenChange={setIsPlanDropdownOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  className={cn(
+                    'w-full justify-start text-left font-normal',
+                    !planName && 'text-muted-foreground'
+                  )}
+                >
+                  {planName || 'Select plan'}
+                  {planName && (
+                    <X
+                      className="h-3 w-3 ml-auto hover:bg-accent rounded-sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onPlanNameChange(undefined)
+                        setPlanSearchQuery('')
+                      }}
+                    />
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[350px] p-0" align="start">
+                <div className="p-2 border-b">
+                  <Input
+                    placeholder="Search plans..."
+                    value={planSearchQuery}
+                    onChange={(e) => setPlanSearchQuery(e.target.value)}
+                    className="h-8"
+                  />
+                </div>
+                <div className="max-h-[250px] overflow-y-auto p-1">
+                  {filteredPlanNames.length > 0 ? (
+                    filteredPlanNames.map((plan) => (
+                      <button
+                        key={plan}
+                        onClick={() => {
+                          onPlanNameChange(plan)
+                          setIsPlanDropdownOpen(false)
+                          setPlanSearchQuery('')
+                        }}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-sm rounded-md hover:bg-accent transition-colors",
+                          planName === plan && "bg-accent font-medium"
+                        )}
+                      >
+                        {plan}
+                      </button>
+                    ))
+                  ) : (
+                    <div className="px-3 py-2 text-sm text-muted-foreground text-center">
+                      No plans found
+                    </div>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
 
         {/* Date Range Dropdown */}
         <div className="space-y-2">

@@ -1,6 +1,7 @@
 import { Site } from '@/lib/types/sites'
 import { OrderHistoryItem } from '@/lib/types/order-history'
 import { OrderDetail } from '@/lib/types/order-detail'
+import { SiteGroup } from '@/lib/constants/siteGroups'
 
 /**
  * Filter sites by customer ID
@@ -52,4 +53,66 @@ export const getCustomerContextForNewEntity = (customerId: string | null): strin
     throw new Error('Customer context required to create new entities')
   }
   return customerId
+}
+
+/**
+ * Filter orders by site group
+ * Returns only orders that belong to the specified site group
+ */
+export const filterOrdersBySiteGroup = (orders: OrderHistoryItem[], siteGroup: SiteGroup): OrderHistoryItem[] => {
+  return orders.filter(order => order.siteGroup === siteGroup)
+}
+
+/**
+ * Filter sites by site group
+ * Returns only sites that belong to the specified site group
+ */
+export const filterSitesBySiteGroup = (sites: Site[], siteGroup: SiteGroup): Site[] => {
+  return sites.filter(site => site.siteGroup === siteGroup)
+}
+
+/**
+ * Filter orders by both customer and site group
+ * Combines customer filtering (for impersonation) with site group filtering (for portal isolation)
+ */
+export const filterOrdersByCustomerAndSiteGroup = (
+  orders: OrderHistoryItem[],
+  customerId: string | null,
+  siteGroup: SiteGroup
+): OrderHistoryItem[] => {
+  // First filter by customer (if applicable)
+  const customerFiltered = filterOrdersByCustomer(orders, customerId)
+  // Then filter by site group
+  return filterOrdersBySiteGroup(customerFiltered, siteGroup)
+}
+
+/**
+ * Filter sites by both customer and site group
+ * Combines customer filtering (for impersonation) with site group filtering (for portal isolation)
+ */
+export const filterSitesByCustomerAndSiteGroup = (
+  sites: Site[],
+  customerId: string | null,
+  siteGroup: SiteGroup
+): Site[] => {
+  // First filter by customer (if applicable)
+  const customerFiltered = filterSitesByCustomer(sites, customerId)
+  // Then filter by site group
+  return filterSitesBySiteGroup(customerFiltered, siteGroup)
+}
+
+/**
+ * Verify order belongs to correct site group
+ * Returns true if order belongs to the specified site group
+ */
+export const verifyOrderSiteGroup = (order: OrderDetail | OrderHistoryItem, siteGroup: SiteGroup): boolean => {
+  return order.siteGroup === siteGroup
+}
+
+/**
+ * Verify site belongs to correct site group
+ * Returns true if site belongs to the specified site group
+ */
+export const verifySiteSiteGroup = (site: Site, siteGroup: SiteGroup): boolean => {
+  return site.siteGroup === siteGroup
 }

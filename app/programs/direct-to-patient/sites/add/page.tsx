@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowLeft, Loader2, AlertCircle } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { Site, SiteFormData, siteFormSchema } from "@/lib/types/sites"
 import { FormSection } from "@/components/form/FormSection"
 import { SiteAddressInput } from "@/components/sites/SiteAddressInput"
@@ -20,21 +20,15 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { getSitesBySiteGroup } from "@/lib/data"
-import { findSiteById } from "@/lib/utils/siteHelpers"
+import { generateNextSiteNumber } from "@/lib/utils/siteHelpers"
 import { useSessionContext } from "@/lib/hooks/useSessionContext"
 import { useSiteGroupContext } from "@/lib/hooks/useSiteGroupContext"
-import { verifySiteOwnership } from "@/lib/utils/dataFilters"
+import { getCustomerContextForNewEntity } from "@/lib/utils/dataFilters"
 
-export default function EditSitePage() {
+export default function AddSitePage() {
   const router = useRouter()
-  const params = useParams()
-  const siteId = params.id as string
-  const { activeCustomerId, isLoading: sessionLoading } = useSessionContext()
+  const { activeCustomerId } = useSessionContext()
   const { currentSiteGroup } = useSiteGroupContext()
-  
-  const [isLoading, setIsLoading] = useState(true)
-  const [site, setSite] = useState<Site | null>(null)
-  const [accessDenied, setAccessDenied] = useState(false)
   
   const form = useForm<SiteFormData>({
     resolver: zodResolver(siteFormSchema),
@@ -57,128 +51,61 @@ export default function EditSitePage() {
     }
   })
 
+  // Auto-generate site number on mount
+  useEffect(() => {
+    const sites = getSitesBySiteGroup(currentSiteGroup)
+    const nextSiteNumber = generateNextSiteNumber(sites)
+    form.setValue('siteNumber', nextSiteNumber)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentSiteGroup])
+
   const hasDifferentBillingAddress = form.watch('hasDifferentBillingAddress')
 
-  // Load site data
-  useEffect(() => {
-    // Wait for session to load
-    if (sessionLoading) return
-    
-    // In production, this would be an API call
-    const sites = getSitesBySiteGroup(currentSiteGroup)
-    const foundSite = findSiteById(sites, siteId)
-    
-    if (!foundSite) {
-      setIsLoading(false)
-      return
-    }
-    
-    // Verify ownership
-    const hasAccess = verifySiteOwnership(foundSite, activeCustomerId)
-    if (!hasAccess) {
-      setAccessDenied(true)
-      setIsLoading(false)
-      return
-    }
-    
-    setSite(foundSite)
-    
-    // Pre-fill form with site data
-    form.reset({
-      siteNumber: foundSite.siteNumber,
-      siteName: foundSite.siteName,
-      siteAddress1: foundSite.siteAddress1,
-      siteAddress2: foundSite.siteAddress2 || '',
-      siteCity: foundSite.siteCity,
-      siteState: foundSite.siteState,
-      siteZipcode: foundSite.siteZipcode,
-      hasDifferentBillingAddress: foundSite.hasDifferentBillingAddress,
-      billingAddress1: foundSite.billingAddress1 || '',
-      billingAddress2: foundSite.billingAddress2 || '',
-      billingCity: foundSite.billingCity || '',
-      billingState: foundSite.billingState || '',
-      billingZipcode: foundSite.billingZipcode || '',
-      billingCountry: foundSite.billingCountry || '',
-    })
-    
-    setIsLoading(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [siteId, activeCustomerId, sessionLoading, currentSiteGroup])
-
   const onSubmit = (data: SiteFormData) => {
-    if (!site) return
+    try {
+      // Get customer context - this will throw if no context is available
+      const customerId = getCustomerContextForNewEntity(activeCustomerId)
+      
+      // Generate unique ID (in production, this would come from the backend)
+      const newSite: Site = {
+        id: `site-${Date.now()}`,
+        customerId, // Associate with current customer
+        siteGroup: currentSiteGroup, // Set site group based on portal context
+        siteNumber: data.siteNumber,
+        siteName: data.siteName,
+        siteAddress1: data.siteAddress1,
+        siteAddress2: data.siteAddress2,
+        siteCity: data.siteCity,
+        siteState: data.siteState,
+        siteZipcode: data.siteZipcode,
+        location: `${data.siteCity}, ${data.siteState}`,
+        status: 'active', // Default to active
+        hasDifferentBillingAddress: data.hasDifferentBillingAddress,
+        billingAddress1: data.billingAddress1,
+        billingAddress2: data.billingAddress2,
+        billingCity: data.billingCity,
+        billingState: data.billingState,
+        billingZipcode: data.billingZipcode,
+        billingCountry: data.billingCountry,
+        createdDate: new Date(),
+        lastModified: new Date(),
+      }
 
-    // Update site with new data
-    const updatedSite: Site = {
-      ...site,
-      siteNumber: data.siteNumber,
-      siteName: data.siteName,
-      siteAddress1: data.siteAddress1,
-      siteAddress2: data.siteAddress2,
-      siteCity: data.siteCity,
-      siteState: data.siteState,
-      siteZipcode: data.siteZipcode,
-      location: `${data.siteCity}, ${data.siteState}`,
-      hasDifferentBillingAddress: data.hasDifferentBillingAddress,
-      billingAddress1: data.billingAddress1,
-      billingAddress2: data.billingAddress2,
-      billingCity: data.billingCity,
-      billingState: data.billingState,
-      billingZipcode: data.billingZipcode,
-      billingCountry: data.billingCountry,
-      lastModified: new Date(),
+      // In production, this would be an API call
+      // For now, we'll store in sessionStorage to pass to the sites page
+      sessionStorage.setItem('newSite_dtp', JSON.stringify(newSite))
+      sessionStorage.setItem('showSuccessMessage_dtp', 'true')
+      
+      // Redirect back to sites list
+      router.push('/programs/direct-to-patient/sites')
+    } catch (error) {
+      console.error('Failed to create site:', error)
+      // In production, show an error toast/message to the user
     }
-
-    // In production, this would be an API call
-    // For now, we'll store in sessionStorage to pass to the sites page
-    sessionStorage.setItem('updatedSite_ss', JSON.stringify(updatedSite))
-    sessionStorage.setItem('showUpdateSuccessMessage_ss', 'true')
-    
-    // Redirect back to sites list
-    router.push('/programs/single-site/sites')
   }
 
   const handleBack = () => {
-    router.push('/programs/single-site/sites')
-  }
-
-  if (isLoading) {
-    return (
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 max-w-[1400px]">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="flex flex-col items-center gap-4">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-lg text-gray-600 dark:text-gray-400">Loading site details...</p>
-          </div>
-        </div>
-      </main>
-    )
-  }
-
-  if (accessDenied || !site) {
-    return (
-      <main className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 max-w-[1400px]">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center max-w-md">
-            <div className="bg-red-50 dark:bg-red-950 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="h-8 w-8 text-red-600 dark:text-red-400" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2">
-              {accessDenied ? 'Access Denied' : 'Site Not Found'}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              {accessDenied 
-                ? 'You do not have permission to edit this site.' 
-                : 'The requested site could not be found.'}
-            </p>
-            <Button onClick={handleBack}>
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Sites
-            </Button>
-          </div>
-        </div>
-      </main>
-    )
+    router.push('/programs/direct-to-patient/sites')
   }
 
   return (
@@ -195,10 +122,10 @@ export default function EditSitePage() {
           Back to Sites
         </Button>
         <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-50 mb-2">
-          Edit Site
+          Add New Site
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-400">
-          Update site information for {site?.siteName}.
+          Create and register a new site under the Direct to Patient group.
           <span className="text-destructive ml-1">*</span> indicates required fields
         </p>
       </div>
@@ -215,14 +142,14 @@ export default function EditSitePage() {
               <FormLabel>Site Group</FormLabel>
               <FormControl>
                 <Input
-                  value="Single Site"
+                  value="Direct to Patient"
                   disabled
                   className="bg-gray-100 dark:bg-gray-800"
                 />
               </FormControl>
             </FormItem>
 
-            {/* Site Number - Read-only in edit mode */}
+            {/* Site Number */}
             <FormField
               control={form.control}
               name="siteNumber"
@@ -313,22 +240,14 @@ export default function EditSitePage() {
             </FormSection>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-center gap-4 pt-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleBack}
-              className="w-48"
-            >
-              Cancel
-            </Button>
+          {/* Action Button */}
+          <div className="flex items-center justify-center pt-6">
             <Button
               type="submit"
               disabled={!form.formState.isValid || form.formState.isSubmitting}
               className="w-48"
             >
-              Update Site
+              Save Site
             </Button>
           </div>
         </form>

@@ -73,9 +73,10 @@ export default function EditSitePage() {
       return
     }
     
-    // Verify ownership
+    // Verify ownership and site group match
     const hasAccess = verifySiteOwnership(foundSite, activeCustomerId)
-    if (!hasAccess) {
+    const siteGroupMatches = foundSite.siteGroup === currentSiteGroup
+    if (!hasAccess || !siteGroupMatches) {
       setAccessDenied(true)
       setIsLoading(false)
       return
@@ -131,15 +132,15 @@ export default function EditSitePage() {
 
     // In production, this would be an API call
     // For now, we'll store in sessionStorage to pass to the sites page
-    sessionStorage.setItem('updatedSite_ss', JSON.stringify(updatedSite))
-    sessionStorage.setItem('showUpdateSuccessMessage_ss', 'true')
+    sessionStorage.setItem('updatedSite_dtp', JSON.stringify(updatedSite))
+    sessionStorage.setItem('showUpdateSuccessMessage_dtp', 'true')
     
     // Redirect back to sites list
-    router.push('/programs/single-site/sites')
+    router.push('/programs/direct-to-patient/sites')
   }
 
   const handleBack = () => {
-    router.push('/programs/single-site/sites')
+    router.push('/programs/direct-to-patient/sites')
   }
 
   if (isLoading) {
@@ -215,7 +216,7 @@ export default function EditSitePage() {
               <FormLabel>Site Group</FormLabel>
               <FormControl>
                 <Input
-                  value="Single Site"
+                  value="Direct to Patient"
                   disabled
                   className="bg-gray-100 dark:bg-gray-800"
                 />

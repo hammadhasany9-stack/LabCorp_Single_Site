@@ -7,7 +7,7 @@ export type ScreenPermission = {
 }
 
 export const SCREEN_PERMISSIONS: ScreenPermission[] = [
-  // Current screens (all accessible to both, customer needs context)
+  // Single Site Portal screens (all accessible to both, customer needs context)
   { path: '/programs/single-site/sites', customerVisible: true, requiresCustomerId: true },
   { path: '/programs/single-site/sites/add', customerVisible: true, requiresCustomerId: true },
   { path: '/programs/single-site/sites/edit/[id]', customerVisible: true, requiresCustomerId: true },
@@ -15,6 +15,15 @@ export const SCREEN_PERMISSIONS: ScreenPermission[] = [
   { path: '/programs/single-site/order-history/[orderId]', customerVisible: true, requiresCustomerId: true },
   { path: '/programs/single-site/place-order', customerVisible: true, requiresCustomerId: true },
   { path: '/programs/single-site/order-confirmation', customerVisible: true, requiresCustomerId: true },
+  
+  // Direct to Patient Portal screens (all accessible to both, customer needs context)
+  { path: '/programs/direct-to-patient/sites', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/sites/add', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/sites/edit/[id]', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/order-history', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/order-history/[orderId]', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/place-order', customerVisible: true, requiresCustomerId: true },
+  { path: '/programs/direct-to-patient/order-confirmation', customerVisible: true, requiresCustomerId: true },
   
   // Admin-only screens
   { path: '/admin/impersonate', adminOnly: true, description: 'Customer impersonation screen' },

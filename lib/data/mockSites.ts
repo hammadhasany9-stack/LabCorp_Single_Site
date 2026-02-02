@@ -1,10 +1,12 @@
 import { Site, SiteMetrics } from '@/lib/types/sites'
+import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 
 export const mockSites: Site[] = [
   {
     id: '1',
     siteNumber: 'SITE-001',
     siteName: 'Downtown Medical Center',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'New York, NY',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     siteAddress1: '123 Medical Plaza',
@@ -27,6 +29,7 @@ export const mockSites: Site[] = [
     id: '2',
     siteNumber: 'SITE-002',
     siteName: 'Riverside Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Los Angeles, CA',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     siteAddress1: '456 Riverside Drive',
@@ -42,6 +45,7 @@ export const mockSites: Site[] = [
     id: '3',
     siteNumber: 'SITE-003',
     siteName: 'Lakeside Health Services',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Chicago, IL',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     siteAddress1: '789 Lake Shore Boulevard',
@@ -58,6 +62,7 @@ export const mockSites: Site[] = [
     id: '4',
     siteNumber: 'SITE-004',
     siteName: 'Sunset Valley Hospital',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Phoenix, AZ',
     customerId: 'CUST-002', // WellCare Network Group
     siteAddress1: '321 Desert Valley Road',
@@ -79,6 +84,7 @@ export const mockSites: Site[] = [
     id: '5',
     siteNumber: 'SITE-005',
     siteName: 'Harbor View Medical',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Seattle, WA',
     customerId: 'CUST-002', // WellCare Network Group
     siteAddress1: '567 Harbor Avenue',
@@ -95,6 +101,7 @@ export const mockSites: Site[] = [
     id: '6',
     siteNumber: 'SITE-006',
     siteName: 'Mountain Peak Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Denver, CO',
     customerId: 'CUST-002', // WellCare Network Group
     siteAddress1: '890 Mountain View Drive',
@@ -110,6 +117,7 @@ export const mockSites: Site[] = [
     id: '7',
     siteNumber: 'SITE-007',
     siteName: 'Bayshore Healthcare',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Miami, FL',
     customerId: 'CUST-003', // Premier Health Systems
     siteAddress1: '234 Ocean Boulevard',
@@ -131,6 +139,7 @@ export const mockSites: Site[] = [
     id: '8',
     siteNumber: 'SITE-008',
     siteName: 'Greenfield Medical Center',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Boston, MA',
     customerId: 'CUST-003', // Premier Health Systems
     siteAddress1: '678 Commonwealth Avenue',
@@ -146,6 +155,7 @@ export const mockSites: Site[] = [
     id: '9',
     siteNumber: 'SITE-009',
     siteName: 'Cedar Hills Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Portland, OR',
     customerId: 'CUST-004', // Horizon Medical Partners
     siteAddress1: '901 Cedar Hills Drive',
@@ -162,6 +172,7 @@ export const mockSites: Site[] = [
     id: '10',
     siteNumber: 'SITE-010',
     siteName: 'Prairie Health Network',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Dallas, TX',
     customerId: 'CUST-004', // Horizon Medical Partners
     siteAddress1: '345 Prairie Lane',
@@ -177,6 +188,7 @@ export const mockSites: Site[] = [
     id: '11',
     siteNumber: 'SITE-011',
     siteName: 'Northgate Medical Plaza',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Minneapolis, MN',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     siteAddress1: '456 Northgate Parkway',
@@ -199,6 +211,7 @@ export const mockSites: Site[] = [
     id: '12',
     siteNumber: 'SITE-012',
     siteName: 'Southview Healthcare',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Atlanta, GA',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     siteAddress1: '789 Peachtree Street',
@@ -214,6 +227,7 @@ export const mockSites: Site[] = [
     id: '13',
     siteNumber: 'SITE-013',
     siteName: 'Eastside Family Medicine',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Philadelphia, PA',
     customerId: 'CUST-006', // Summit Care Corporation (suspended)
     siteAddress1: '123 Market Street',
@@ -230,6 +244,7 @@ export const mockSites: Site[] = [
     id: '14',
     siteNumber: 'SITE-014',
     siteName: 'Westwood Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'San Diego, CA',
     customerId: 'CUST-007', // Bay Area Health Services
     siteAddress1: '567 Westwood Boulevard',
@@ -245,6 +260,7 @@ export const mockSites: Site[] = [
     id: '15',
     siteNumber: 'SITE-015',
     siteName: 'Central City Hospital',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Detroit, MI',
     customerId: 'CUST-007', // Bay Area Health Services
     siteAddress1: '890 Woodward Avenue',
@@ -261,6 +277,7 @@ export const mockSites: Site[] = [
     id: '16',
     siteNumber: 'SITE-016',
     siteName: 'Hilltop Medical Group',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'San Francisco, CA',
     customerId: 'CUST-007', // Bay Area Health Services
     siteAddress1: '234 Hilltop Drive',
@@ -282,6 +299,7 @@ export const mockSites: Site[] = [
     id: '17',
     siteNumber: 'SITE-017',
     siteName: 'Valley View Health Center',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Las Vegas, NV',
     customerId: 'CUST-008', // Northeast Medical Group
     siteAddress1: '678 Valley View Road',
@@ -298,6 +316,7 @@ export const mockSites: Site[] = [
     id: '18',
     siteNumber: 'SITE-018',
     siteName: 'Crossroads Medical',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Nashville, TN',
     customerId: 'CUST-008', // Northeast Medical Group
     siteAddress1: '901 Music Row',
@@ -313,6 +332,7 @@ export const mockSites: Site[] = [
     id: '19',
     siteNumber: 'SITE-019',
     siteName: 'Pinewood Family Care',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Austin, TX',
     customerId: 'CUST-009', // Pacific Wellness Centers
     siteAddress1: '345 Congress Avenue',
@@ -329,6 +349,7 @@ export const mockSites: Site[] = [
     id: '20',
     siteNumber: 'SITE-020',
     siteName: 'Ocean Breeze Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Honolulu, HI',
     customerId: 'CUST-009', // Pacific Wellness Centers
     siteAddress1: '456 Kalakaua Avenue',
@@ -344,6 +365,7 @@ export const mockSites: Site[] = [
     id: '21',
     siteNumber: 'SITE-021',
     siteName: 'Maple Grove Healthcare',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Columbus, OH',
     customerId: 'CUST-010', // Heartland Health Network (suspended)
     siteAddress1: '789 Maple Grove Avenue',
@@ -360,6 +382,7 @@ export const mockSites: Site[] = [
     id: '22',
     siteNumber: 'SITE-022',
     siteName: 'Riverfront Medical',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Indianapolis, IN',
     customerId: 'CUST-011', // Metro Health Associates
     siteAddress1: '123 Riverfront Drive',
@@ -375,6 +398,7 @@ export const mockSites: Site[] = [
     id: '23',
     siteNumber: 'SITE-023',
     siteName: 'Summit Point Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Charlotte, NC',
     customerId: 'CUST-011', // Metro Health Associates
     siteAddress1: '567 Summit Street',
@@ -391,6 +415,7 @@ export const mockSites: Site[] = [
     id: '24',
     siteNumber: 'SITE-024',
     siteName: 'Gateway Health Services',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'St. Louis, MO',
     customerId: 'CUST-011', // Metro Health Associates
     siteAddress1: '890 Gateway Boulevard',
@@ -406,6 +431,7 @@ export const mockSites: Site[] = [
     id: '25',
     siteNumber: 'SITE-025',
     siteName: 'Cornerstone Medical Plaza',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Kansas City, MO',
     customerId: 'CUST-013', // Community Medical Services
     siteAddress1: '234 Main Street',
@@ -422,6 +448,7 @@ export const mockSites: Site[] = [
     id: '26',
     siteNumber: 'SITE-026',
     siteName: 'Parkside Family Medicine',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Raleigh, NC',
     customerId: 'CUST-013', // Community Medical Services
     siteAddress1: '678 Parkside Avenue',
@@ -437,6 +464,7 @@ export const mockSites: Site[] = [
     id: '27',
     siteNumber: 'SITE-027',
     siteName: 'Bridgewater Clinic',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Pittsburgh, PA',
     customerId: 'CUST-014', // Sunshine Health Providers (pending)
     siteAddress1: '901 Liberty Avenue',
@@ -453,6 +481,7 @@ export const mockSites: Site[] = [
     id: '28',
     siteNumber: 'SITE-028',
     siteName: 'Meadowbrook Healthcare',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     location: 'Milwaukee, WI',
     customerId: 'CUST-015', // United Care Solutions (pending)
     siteAddress1: '345 Meadowbrook Lane',

@@ -1,4 +1,5 @@
 import { OrderHistoryItem, OrderMetrics } from '@/lib/types/order-history'
+import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 import { OrderDetail, CustomRequisition, TrackingStatus, TrackingStep } from '@/lib/types/order-detail'
 
 // SOW and Product Type mappings
@@ -93,6 +94,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-001',
     planName: 'BlueCross Health Plan',
     billingAccountNo: 'BA-100234',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-15T09:30:00'),
@@ -108,6 +110,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-002',
     planName: 'UnitedHealth Network',
     billingAccountNo: 'BA-100567',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-16T11:15:00'),
@@ -121,6 +124,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-003',
     planName: 'Aetna Wellness Program',
     billingAccountNo: 'BA-100890',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-17T08:45:00'),
@@ -136,6 +140,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-004',
     planName: 'Cigna Corporate Health',
     billingAccountNo: 'BA-101123',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-002', // WellCare Network Group
     orderDate: new Date('2024-01-18T14:00:00'),
@@ -149,6 +154,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-005',
     planName: 'Humana Plus Benefits',
     billingAccountNo: 'BA-101456',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-002', // WellCare Network Group
     orderDate: new Date('2024-01-19T10:20:00'),
@@ -164,6 +170,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-006',
     planName: 'Kaiser Permanente',
     billingAccountNo: 'BA-101789',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-003', // Premier Health Systems
     orderDate: new Date('2024-01-20T09:00:00'),
@@ -177,6 +184,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-007',
     planName: 'Anthem Blue Shield',
     billingAccountNo: 'BA-102012',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-003', // Premier Health Systems
     orderDate: new Date('2024-01-21T13:30:00'),
@@ -192,6 +200,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-008',
     planName: 'WellCare Health Plans',
     billingAccountNo: 'BA-102345',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-004', // Horizon Medical Partners
     orderDate: new Date('2024-01-22T11:45:00'),
@@ -207,6 +216,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-009',
     planName: 'Molina Healthcare',
     billingAccountNo: 'BA-102678',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-004', // Horizon Medical Partners
     orderDate: new Date('2024-01-23T08:15:00'),
@@ -220,6 +230,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-010',
     planName: 'Centene Corporation',
     billingAccountNo: 'BA-102901',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     orderDate: new Date('2024-01-24T12:00:00'),
@@ -235,6 +246,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-011',
     planName: 'Oscar Health Insurance',
     billingAccountNo: 'BA-103234',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     orderDate: new Date('2024-01-25T15:30:00'),
@@ -248,6 +260,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-012',
     planName: 'Bright Health',
     billingAccountNo: 'BA-103567',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-007', // Bay Area Health Services
     orderDate: new Date('2024-01-26T09:45:00'),
@@ -263,6 +276,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-013',
     planName: 'Friday Health Plans',
     billingAccountNo: 'BA-103890',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-007', // Bay Area Health Services
     orderDate: new Date('2024-01-27T10:30:00'),
@@ -276,6 +290,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-014',
     planName: 'Alignment Healthcare',
     billingAccountNo: 'BA-104123',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-008', // Northeast Medical Group
     orderDate: new Date('2024-01-28T14:15:00'),
@@ -291,6 +306,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-015',
     planName: 'Clover Health',
     billingAccountNo: 'BA-104456',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-008', // Northeast Medical Group
     orderDate: new Date('2024-01-29T11:00:00'),
@@ -306,6 +322,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-016',
     planName: 'Devoted Health',
     billingAccountNo: 'BA-104789',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-009', // Pacific Wellness Centers
     orderDate: new Date('2024-01-30T08:30:00'),
@@ -319,6 +336,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-017',
     planName: 'Sutter Health',
     billingAccountNo: 'BA-105012',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-009', // Pacific Wellness Centers
     orderDate: new Date('2024-01-31T13:45:00'),
@@ -334,6 +352,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-018',
     planName: 'Trinity Health',
     billingAccountNo: 'BA-105345',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-01T09:15:00'),
@@ -347,6 +366,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-019',
     planName: 'Providence Health',
     billingAccountNo: 'BA-105678',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-02T12:30:00'),
@@ -362,6 +382,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-020',
     planName: 'CommonSpirit Health',
     billingAccountNo: 'BA-105901',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-03T10:00:00'),
@@ -375,6 +396,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-021',
     planName: 'Ascension Health',
     billingAccountNo: 'BA-106234',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-04T14:20:00'),
@@ -390,6 +412,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-022',
     planName: 'HCA Healthcare',
     billingAccountNo: 'BA-106567',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-05T09:30:00'),
@@ -405,6 +428,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-023',
     planName: 'Tenet Healthcare',
     billingAccountNo: 'BA-106890',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-06T11:45:00'),
@@ -418,6 +442,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-024',
     planName: 'Community Health Systems',
     billingAccountNo: 'BA-107123',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-07T08:00:00'),
@@ -433,6 +458,7 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     orderNo: 'ORD-2024-025',
     planName: 'Universal Health Services',
     billingAccountNo: 'BA-107456',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-08T13:15:00'),
@@ -471,6 +497,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240115-001',
     orderNo: 'ORD-2024-001',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-15T09:30:00'),
@@ -521,6 +548,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240116-002',
     orderNo: 'ORD-2024-002',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-16T11:15:00'),
@@ -568,6 +596,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240117-003',
     orderNo: 'ORD-2024-003',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-001', // MedHealth Solutions Inc.
     orderDate: new Date('2024-01-17T08:45:00'),
@@ -617,6 +646,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240118-004',
     orderNo: 'ORD-2024-004',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-002', // WellCare Network Group
     orderDate: new Date('2024-01-18T14:00:00'),
@@ -663,6 +693,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240119-005',
     orderNo: 'ORD-2024-005',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-002', // WellCare Network Group
     orderDate: new Date('2024-01-19T10:20:00'),
@@ -713,6 +744,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240120-006',
     orderNo: 'ORD-2024-006',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-003', // Premier Health Systems
     orderDate: new Date('2024-01-20T09:00:00'),
@@ -760,6 +792,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240121-007',
     orderNo: 'ORD-2024-007',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-003', // Premier Health Systems
     orderDate: new Date('2024-01-21T13:30:00'),
@@ -809,6 +842,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240122-008',
     orderNo: 'ORD-2024-008',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-004', // Horizon Medical Partners
     orderDate: new Date('2024-01-22T11:45:00'),
@@ -859,6 +893,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240123-009',
     orderNo: 'ORD-2024-009',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-004', // Horizon Medical Partners
     orderDate: new Date('2024-01-23T08:15:00'),
@@ -905,6 +940,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240124-010',
     orderNo: 'ORD-2024-010',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     orderDate: new Date('2024-01-24T12:00:00'),
@@ -955,6 +991,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240125-011',
     orderNo: 'ORD-2024-011',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-005', // Coastal Healthcare Alliance
     orderDate: new Date('2024-01-25T15:30:00'),
@@ -1001,6 +1038,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240126-012',
     orderNo: 'ORD-2024-012',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-007', // Bay Area Health Services
     orderDate: new Date('2024-01-26T09:45:00'),
@@ -1050,6 +1088,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240127-013',
     orderNo: 'ORD-2024-013',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-007', // Bay Area Health Services
     orderDate: new Date('2024-01-27T10:30:00'),
@@ -1097,6 +1136,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240128-014',
     orderNo: 'ORD-2024-014',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-008', // Northeast Medical Group
     orderDate: new Date('2024-01-28T14:15:00'),
@@ -1146,6 +1186,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240129-015',
     orderNo: 'ORD-2024-015',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-008', // Northeast Medical Group
     orderDate: new Date('2024-01-29T11:00:00'),
@@ -1196,6 +1237,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240130-016',
     orderNo: 'ORD-2024-016',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-009', // Pacific Wellness Centers
     orderDate: new Date('2024-01-30T08:30:00'),
@@ -1242,6 +1284,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240131-017',
     orderNo: 'ORD-2024-017',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-009', // Pacific Wellness Centers
     orderDate: new Date('2024-01-31T13:45:00'),
@@ -1292,6 +1335,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240201-018',
     orderNo: 'ORD-2024-018',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'cancelled',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-01T09:15:00'),
@@ -1338,6 +1382,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240202-019',
     orderNo: 'ORD-2024-019',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-02T12:30:00'),
@@ -1387,6 +1432,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240203-020',
     orderNo: 'ORD-2024-020',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-011', // Metro Health Associates
     orderDate: new Date('2024-02-03T10:00:00'),
@@ -1434,6 +1480,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240204-021',
     orderNo: 'ORD-2024-021',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-04T14:20:00'),
@@ -1484,6 +1531,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240205-022',
     orderNo: 'ORD-2024-022',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-05T09:30:00'),
@@ -1533,6 +1581,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240206-023',
     orderNo: 'ORD-2024-023',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'in_progress',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-06T11:45:00'),
@@ -1579,6 +1628,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240207-024',
     orderNo: 'ORD-2024-024',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-07T08:00:00'),
@@ -1629,6 +1679,7 @@ export const mockOrderDetails: OrderDetail[] = [
   {
     orderId: 'SS-20240208-025',
     orderNo: 'ORD-2024-025',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
     status: 'shipped',
     customerId: 'CUST-013', // Community Medical Services
     orderDate: new Date('2024-02-08T13:15:00'),

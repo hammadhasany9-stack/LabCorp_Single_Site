@@ -104,7 +104,7 @@ export default function OrderDetailPage() {
               The order with ID "{orderId}" could not be found. It may have been removed or the ID may be incorrect.
             </p>
             <Button
-              onClick={() => router.push('/programs/single-site/order-history')}
+              onClick={() => router.push('/programs/direct-to-patient/order-history')}
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -128,7 +128,7 @@ export default function OrderDetailPage() {
       />
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* LEFT COLUMN */}
         <div className="space-y-6">
           {/* Client Details */}
@@ -156,6 +156,19 @@ export default function OrderDetailPage() {
             contactPhone={orderDetail.contactPhone}
             contactAddress={orderDetail.contactAddress}
             specialInstructions={orderDetail.specialInstructions}
+          />
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="space-y-6">
+          {/* Fulfillment & Tracking */}
+          <FulfillmentCard
+            outboundCarrier={orderDetail.outboundCarrier}
+            outboundTrackingId={orderDetail.outboundTrackingId}
+            outboundTrackingIds={orderDetail.outboundTrackingIds}
+            inboundCarrier={orderDetail.inboundCarrier}
+            orderStatus={orderDetail.status}
+            siteGroup={orderDetail.siteGroup}
           />
 
           {/* Order Details */}
@@ -186,28 +199,15 @@ export default function OrderDetailPage() {
             returnZip={orderDetail.returnZip}
           />
         </div>
-
-        {/* RIGHT COLUMN */}
-        <div className="space-y-6">
-          {/* Fulfillment & Tracking */}
-          <FulfillmentCard
-            outboundCarrier={orderDetail.outboundCarrier}
-            outboundTrackingId={orderDetail.outboundTrackingId}
-            outboundTrackingIds={orderDetail.outboundTrackingIds}
-            inboundCarrier={orderDetail.inboundCarrier}
-            orderStatus={orderDetail.status}
-            siteGroup={orderDetail.siteGroup}
-          />
-
-          {/* Custom Requisition Table */}
-          <CustomRequisitionTable
-            requisitions={orderDetail.customRequisitions}
-            orderStatus={orderDetail.status}
-            siteGroup={orderDetail.siteGroup}
-            orderId={orderDetail.orderId}
-          />
-        </div>
       </div>
+
+      {/* Full-width Custom Requisition Table */}
+      <CustomRequisitionTable
+        requisitions={orderDetail.customRequisitions}
+        orderStatus={orderDetail.status}
+        siteGroup={orderDetail.siteGroup}
+        orderId={orderDetail.orderId}
+      />
     </main>
   )
 }

@@ -43,6 +43,7 @@ export default function DashboardPage() {
               title="Direct to Patient"
               icon={Users}
               description="Direct patient ordering system"
+              href="/programs/direct-to-patient"
             />
             
           </div>

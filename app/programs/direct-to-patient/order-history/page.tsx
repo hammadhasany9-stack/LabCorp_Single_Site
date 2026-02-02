@@ -23,8 +23,8 @@ import { calculateMetrics } from '@/lib/data/mockOrderHistory'
 import { OrderHistoryFilters, SortField, SortDirection, DateRangePreset, getUniquePlanNames } from '@/lib/types/order-history'
 import { filterOrders, sortOrders, paginateOrders, exportToCSV } from '@/lib/utils/orderHelpers'
 import { useSessionContext } from '@/lib/hooks/useSessionContext'
-import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
 import { filterOrdersByCustomer } from '@/lib/utils/dataFilters'
+import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
 
 const PAGE_SIZE = 15
 

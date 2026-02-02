@@ -1,9 +1,11 @@
 import { z } from 'zod'
+import { SiteGroup } from '@/lib/constants/siteGroups'
 
 export interface Site {
   id: string
   siteNumber: string
   siteName: string
+  siteGroup: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   location: string
   status: 'active' | 'inactive'
   customerId: string // Associated customer ID
@@ -50,6 +52,7 @@ export interface StatusCounts {
 export interface SiteFormData {
   siteNumber: string
   siteName: string
+  siteGroup?: SiteGroup // Optional for form, will be set from portal context
   siteAddress1: string
   siteAddress2?: string
   siteCity: string

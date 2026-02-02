@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { ArrowLeft, Home } from 'lucide-react'
+import { ArrowLeft, Home, Users, Building2 } from 'lucide-react'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { Button } from '@/components/ui/button'
 import { Navbar } from '@/components/Navbar'
@@ -29,6 +29,7 @@ function ImpersonateContent() {
   const [currentPage, setCurrentPage] = useState(1)
   
   const destination = searchParams.get('destination') || '/programs/single-site'
+  const isDirectToPatient = destination.includes('direct-to-patient')
 
   // Protect this page - only admins can access
   useEffect(() => {
@@ -84,7 +85,8 @@ function ImpersonateContent() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-950">
-      <Navbar title="Customer Impersonation" />
+      <Navbar title={isDirectToPatient ? "Direct to Patient - Customer Impersonation" : "Single Site - Customer Impersonation"} />
+    
       
       <main className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-10 max-w-[1400px]">
       {/* Header */}
@@ -100,11 +102,26 @@ function ImpersonateContent() {
         </Button>
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-50 mb-2">
-              Customer Impersonation
-            </h1>
+            <div className="flex items-center gap-3 mb-2">
+              <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-50">
+                {isDirectToPatient ? "Direct to Patient Portal" : "Single Site Portal"}
+              </h1>
+              {isDirectToPatient ? (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-100 border border-purple-200 dark:border-purple-700">
+                  <Users className="h-4 w-4" />
+                  DTP Program
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-100 border border-blue-200 dark:border-blue-700">
+                  <Building2 className="h-4 w-4" />
+                  Single Site Program
+                </span>
+              )}
+            </div>
             <p className="text-lg text-gray-600 dark:text-gray-400">
-              Select a customer to impersonate or view all data as administrator
+              {isDirectToPatient 
+                ? "Select a customer to impersonate for Direct to Patient ordering" 
+                : "Select a customer to impersonate for Single Site ordering"}
             </p>
           </div>
         </div>

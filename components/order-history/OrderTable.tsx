@@ -15,6 +15,8 @@ import {
 import { OrderHistoryItem, SortField, SortDirection } from '@/lib/types/order-history'
 import { formatOrderDate, formatOrderDateOnly, formatOrderTimeOnly, getStatusVariant, getStatusLabel } from '@/lib/utils/orderHelpers'
 import { cn } from '@/lib/utils'
+import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
+import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 
 interface OrderTableProps {
   orders: OrderHistoryItem[]
@@ -30,6 +32,15 @@ export function OrderTable({
   onSort
 }: OrderTableProps) {
   const router = useRouter()
+  const { currentSiteGroup } = useSiteGroupContext()
+  
+  const handleViewOrder = (orderId: string) => {
+    // Route to the correct portal based on current site group
+    const portalPath = currentSiteGroup === SITE_GROUPS.DIRECT_TO_PATIENT 
+      ? '/programs/direct-to-patient' 
+      : '/programs/single-site'
+    router.push(`${portalPath}/order-history/${orderId}`)
+  }
   
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) {
@@ -131,7 +142,7 @@ export function OrderTable({
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => router.push(`/programs/single-site/order-history/${order.orderId}`)}
+                        onClick={() => handleViewOrder(order.orderId)}
                         className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
                       >
                         <Eye className="h-4 w-4 mr-1" />

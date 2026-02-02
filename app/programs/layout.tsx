@@ -1,4 +1,8 @@
+'use client'
+
+import { usePathname } from 'next/navigation'
 import { Sidebar } from "@/components/Sidebar"
+import { DirectToPatientSidebar } from "@/components/DirectToPatientSidebar"
 import { ImpersonationBanner } from "@/components/ImpersonationBanner"
 
 export default function ProgramsLayout({
@@ -6,10 +10,13 @@ export default function ProgramsLayout({
 }: {
   children: React.ReactNode
 }) {
+  const pathname = usePathname()
+  const isDirectToPatient = pathname?.includes('/direct-to-patient') ?? false
+  
   return (
     <div className="min-h-screen">
-      {/* Sidebar with integrated navbar */}
-      <Sidebar />
+      {/* Sidebar with integrated navbar - conditional based on portal */}
+      {isDirectToPatient ? <DirectToPatientSidebar /> : <Sidebar />}
       
       {/* Main Content Area - Add left margin on large screens to account for fixed sidebar */}
       <div className="lg:ml-80">

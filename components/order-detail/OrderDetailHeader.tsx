@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { getStatusVariant, getStatusLabel } from '@/lib/utils/orderHelpers'
 import { cn } from '@/lib/utils'
+import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
+import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 
 interface OrderDetailHeaderProps {
   orderId: string
@@ -21,6 +23,15 @@ export function OrderDetailHeader({
   onExportXLS
 }: OrderDetailHeaderProps) {
   const router = useRouter()
+  const { currentSiteGroup } = useSiteGroupContext()
+  
+  const handleBackToOrderHistory = () => {
+    // Route to the correct portal based on current site group
+    const portalPath = currentSiteGroup === SITE_GROUPS.DIRECT_TO_PATIENT 
+      ? '/programs/direct-to-patient' 
+      : '/programs/single-site'
+    router.push(`${portalPath}/order-history`)
+  }
 
   return (
     <div className="sticky top-0 z-10  shadow-md border border-gray-200 dark:border-zinc-800 bg-transparent backdrop-blur-lg dark:bg-blur-lg py-4 mb-8 rounded-2xl px-4">
@@ -29,7 +40,7 @@ export function OrderDetailHeader({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => router.push('/programs/single-site/order-history')}
+            onClick={handleBackToOrderHistory}
             className="hover:bg-gray-100 dark:hover:bg-zinc-800"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />

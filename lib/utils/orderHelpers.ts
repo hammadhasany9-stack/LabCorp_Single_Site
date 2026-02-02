@@ -83,6 +83,13 @@ export const filterOrders = (
     )
   }
 
+  // Filter by plan name
+  if (filters.planName) {
+    filtered = filtered.filter(order =>
+      order.planName === filters.planName
+    )
+  }
+
   // Filter by order number
   if (filters.orderNo) {
     const orderNoLower = filters.orderNo.toLowerCase()

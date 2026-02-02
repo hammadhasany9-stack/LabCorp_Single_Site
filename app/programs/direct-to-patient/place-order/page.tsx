@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { OrderFormData, orderSchema } from '@/lib/types/order'
+import { Patient } from '@/lib/types/patient'
 import { formatPhoneNumber } from '@/lib/utils/formatters'
 import { FormSection } from '@/components/form/FormSection'
 import { AddressInput } from '@/components/form/AddressInput'
@@ -31,10 +32,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Upload, Calendar as CalendarIcon } from 'lucide-react'
+import { Upload, Calendar as CalendarIcon, ArrowRight } from 'lucide-react'
 import { format } from 'date-fns'
 import { cn } from '@/lib/utils'
 import { OrderPreviewDialog } from '@/components/OrderPreviewDialog'
+import { PatientDetailsDialog } from '@/components/PatientDetailsDialog'
 import { useSessionContext } from '@/lib/hooks/useSessionContext'
 import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
 import { getCustomerContextForNewEntity } from '@/lib/utils/dataFilters'
@@ -58,8 +60,15 @@ export default function PlaceOrderPage() {
   const { currentSiteGroup } = useSiteGroupContext()
   const [showPreview, setShowPreview] = useState(false)
   const [csvFileName, setCsvFileName] = useState<string | null>(null)
+  const [letterFileName, setLetterFileName] = useState<string | null>(null)
   const [startReqNumber, setStartReqNumber] = useState<string>('')
   const [endReqNumber, setEndReqNumber] = useState<string>('')
+  
+  // Patient Details State
+  const [patientDetailsEnabled, setPatientDetailsEnabled] = useState(false)
+  const [patients, setPatients] = useState<Patient[]>([])
+  const [showPatientDialog, setShowPatientDialog] = useState(false)
+  const [adHocShipping, setAdHocShipping] = useState(false)
   
   const form = useForm<OrderFormData>({
     resolver: zodResolver(orderSchema),
@@ -102,7 +111,12 @@ export default function PlaceOrderPage() {
   const handleConfirmOrder = () => {
     // Always navigate to confirmation page for now
     // In production, this would validate customer context and create order via API
-    router.push('/programs/single-site/order-confirmation')
+    router.push('/programs/direct-to-patient/order-confirmation')
+  }
+
+  const handleSavePatients = (updatedPatients: Patient[], adHoc: boolean) => {
+    setPatients(updatedPatients)
+    setAdHocShipping(adHoc)
   }
 
   return (
@@ -189,10 +203,9 @@ export default function PlaceOrderPage() {
                     </FormItem>
                   )}
                 />
-
-                {/* Conditional Custom Requisition Fields */}
-                {customRequisition && (
-                  <div className="mt-6 space-y-4 p-4 rounded-xl">
+                 {/* Conditional Custom Requisition Fields */}
+                 {customRequisition && (
+                  <div className="mt-6 space-y-4 p-4 rounded-xl border border-gray-200 dark:border-zinc-800">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* SOW# Dropdown */}
                       <FormField
@@ -326,8 +339,45 @@ export default function PlaceOrderPage() {
                     )}
                   </div>
                 )}
+
+                {/* Patient Details Toggle */}
+                <div className="flex items-center justify-between rounded-xl border p-4 mt-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Patient Details</FormLabel>
+                  </div>
+                  <Switch 
+                    checked={patientDetailsEnabled}
+                    onCheckedChange={setPatientDetailsEnabled}
+                  />
+                </div>
+
+                 
+
+                {/* Conditional Patient Details Section */}
+                {patientDetailsEnabled && (
+                  <div className="mt-4 p-4 rounded-xl border bg-gray-50 dark:bg-zinc-950">
+                    <div className="flex items-center justify-between">
+                      <Badge variant="secondary" className="text-sm py-1 bg-blue-100 dark:bg-blue-900">
+                        Total Patients Added: {patients.length}
+                      </Badge>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowPatientDialog(true)}
+                      >
+                        View Patient Details
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
               </FormSection>
 
+
+                
+              
               {/* Order Notes */}
               <FormSection 
                 title="Order Notes" 
@@ -353,6 +403,59 @@ export default function PlaceOrderPage() {
                     </FormItem>
                   )}
                 />
+              </FormSection>
+
+              {/* In-kit Letter Template Upload Section */}
+              <FormSection 
+                title="In-kit Letter Template" 
+                description="Upload a custom letter template (optional)"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center gap-4">
+                    <Input 
+                      type="file" 
+                      accept=".pdf,.doc,.docx"
+                      className="hidden" 
+                      id="letter-upload"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0]
+                        if (file) {
+                          // Validate file size (10MB = 10 * 1024 * 1024 bytes)
+                          if (file.size > 10 * 1024 * 1024) {
+                            alert('File size must be less than 10 MB')
+                            e.target.value = ''
+                            return
+                          }
+                          setLetterFileName(file.name)
+                        }
+                      }}
+                    />
+                    <label htmlFor="letter-upload">
+                      <Button type="button" variant="outline" asChild>
+                        <span className="cursor-pointer flex items-center gap-2">
+                          <Upload className="h-4 w-4" />
+                          {letterFileName ? 'Change File' : 'Upload File'}
+                        </span>
+                      </Button>
+                    </label>
+                    <div className="flex-1">
+                      {letterFileName ? (
+                        <Badge variant="secondary" className="max-w-full truncate">
+                          {letterFileName}
+                        </Badge>
+                      ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          Allowed formats: PDF, DOC, DOCX (Max size: 10 MB)
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {letterFileName && (
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Allowed formats: PDF, DOC, DOCX (Max size: 10 MB)
+                    </p>
+                  )}
+                </div>
               </FormSection>
 
               {/* Return Address Section */}
@@ -637,6 +740,14 @@ export default function PlaceOrderPage() {
         onOpenChange={setShowPreview}
         data={form.getValues()}
         onConfirm={handleConfirmOrder}
+      />
+
+      {/* Patient Details Dialog */}
+      <PatientDetailsDialog
+        open={showPatientDialog}
+        onOpenChange={setShowPatientDialog}
+        patients={patients}
+        onSave={handleSavePatients}
       />
     </div>
   )

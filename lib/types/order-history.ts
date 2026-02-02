@@ -1,4 +1,5 @@
 import { Timestamp } from "next/dist/server/lib/cache-handlers/types"
+import { SiteGroup } from '@/lib/constants/siteGroups'
 
 export interface OrderHistoryItem {
   orderId: string
@@ -6,6 +7,7 @@ export interface OrderHistoryItem {
   planName: string
   billingAccountNo: string
   status: 'in_progress' | 'shipped' | 'cancelled'
+  siteGroup: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   customerId: string // Associated customer ID
   orderDate: Date
   orderTime?: Timestamp
@@ -30,6 +32,12 @@ export const KIT_TYPE_OPTIONS: KitTypeOption[] = [
   { id: 'KIT-KIDNEY-001', name: 'Kidney health kit' }
 ]
 
+// Helper function to get unique plan names from orders
+export const getUniquePlanNames = (orders: OrderHistoryItem[]): string[] => {
+  const uniqueNames = new Set(orders.map(order => order.planName))
+  return Array.from(uniqueNames).sort()
+}
+
 export type DateRangePreset = 'last_30' | 'last_60' | 'last_90' | 'custom'
 
 export interface OrderHistoryFilters {
@@ -43,6 +51,7 @@ export interface OrderHistoryFilters {
   trackingId?: string
   kitType?: string
   orderNo?: string
+  planName?: string
 }
 
 export interface OrderMetrics {

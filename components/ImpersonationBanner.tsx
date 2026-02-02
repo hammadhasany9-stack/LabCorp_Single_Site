@@ -4,7 +4,7 @@ import { useAuth } from '@/lib/hooks/useAuth'
 import { useSessionContext } from '@/lib/hooks/useSessionContext'
 import { Button } from '@/components/ui/button'
 import { Eye, ShieldCheck, X } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { logImpersonationEnd } from '@/lib/utils/auditLog'
 
@@ -12,7 +12,12 @@ export function ImpersonationBanner() {
   const { isImpersonating, endImpersonation, isViewingAsAdmin, user } = useAuth()
   const { customer } = useSessionContext()
   const router = useRouter()
+  const pathname = usePathname()
   const [isExiting, setIsExiting] = useState(false)
+  
+  // Determine which portal we're currently in
+  const isDirectToPatient = pathname?.includes('direct-to-patient')
+  const destination = isDirectToPatient ? '/programs/direct-to-patient' : '/programs/single-site'
 
   // Don't show banner if not impersonating and not viewing as admin
   if (!isImpersonating && !isViewingAsAdmin) {
@@ -33,7 +38,7 @@ export function ImpersonationBanner() {
       }
       
       await endImpersonation()
-      router.push('/admin/impersonate')
+      router.push(`/admin/impersonate?destination=${encodeURIComponent(destination)}`)
     } catch (error) {
       console.error('Failed to exit impersonation:', error)
       setIsExiting(false)
@@ -41,7 +46,7 @@ export function ImpersonationBanner() {
   }
 
   const handleSwitchView = () => {
-    router.push('/admin/impersonate')
+    router.push(`/admin/impersonate?destination=${encodeURIComponent(destination)}`)
   }
 
   if (isImpersonating && customer) {

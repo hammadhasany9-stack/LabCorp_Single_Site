@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { Copy, Check, Package, Truck, MapPin } from 'lucide-react'
 import { OutboundTrackingModal } from './OutboundTrackingModal'
+import { SiteGroup, SITE_GROUPS } from '@/lib/constants/siteGroups'
 
 interface FulfillmentCardProps {
   outboundCarrier: string
@@ -13,6 +14,7 @@ interface FulfillmentCardProps {
   outboundTrackingIds?: string[]
   inboundCarrier: string
   orderStatus: 'in_progress' | 'shipped' | 'cancelled'
+  siteGroup?: SiteGroup
 }
 
 export function FulfillmentCard({
@@ -20,7 +22,8 @@ export function FulfillmentCard({
   outboundTrackingId,
   outboundTrackingIds,
   inboundCarrier,
-  orderStatus
+  orderStatus,
+  siteGroup
 }: FulfillmentCardProps) {
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const [trackingModalOpen, setTrackingModalOpen] = useState(false)
@@ -33,6 +36,7 @@ export function FulfillmentCard({
     : []
   
   const isTrackingEnabled = orderStatus === 'shipped' && trackingIds.length > 0
+  const isDirectToPatient = siteGroup === SITE_GROUPS.DIRECT_TO_PATIENT
 
   const handleCopyTracking = async (trackingId: string, index: number) => {
     await navigator.clipboard.writeText(trackingId)
@@ -56,15 +60,18 @@ export function FulfillmentCard({
       <Separator className="mb-4" />
       <CardContent className="space-y-6">
         {/* Outbound Shipment */}
-        <div className="p-4 bg-green-50 dark:bg-green-950 rounded-xl border-2 border-green-200 dark:border-green-900">
+        <div className="flex flex-col p-4 bg-green-50 dark:bg-green-950 rounded-xl border-2 border-green-200 dark:border-green-900">
             <div className="flex items-center justify-between gap-2 mb-3">
             <div className="flex items-center gap-2">
               <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
               <h3 className="text-base font-semibold text-green-900 dark:text-green-100">
                 Outbound Shipment
               </h3>
+              
             </div>
-            {trackingIds.length > 0 && (
+            
+            {/* Show track button only for Single Site */}
+            {!isDirectToPatient && trackingIds.length > 0 && (
               <Button
                 variant="outline"
                 size="sm"
@@ -84,47 +91,57 @@ export function FulfillmentCard({
               <p className="text-base font-medium text-green-900 dark:text-green-50 mt-1">
                 {outboundCarrier}
               </p>
+              <div className="flex items-center gap-2">
+            <p className="text-xs text-green-600 dark:text-green-400 mt-3">
+            Individual tracking IDs available in Custom Requisition table below
+          </p>
+            </div>
             </div>
             
-            {trackingIds.length > 0 ? (
-              <div>
-                <label className="text-sm text-green-700 dark:text-green-300">
-                  Tracking ID{trackingIds.length > 1 ? 's' : ''}
-                </label>
-                <div className="space-y-2 mt-1">
-                  {trackingIds.map((trackingId, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <p className="text-base font-medium font-mono text-green-900 dark:text-green-50 mr-8">
-                        {trackingId}
-                      </p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleCopyTracking(trackingId, index)}
-                        className="h-8 w-8 p-0 flex-shrink-0 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-100 dark:hover:bg-green-900"
-                      >
-                        {copiedIndex === index ? (
-                          <Check className="h-4 w-4 text-green-600" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
+            {/* Show tracking IDs only for Single Site */}
+            {!isDirectToPatient && (
+              <>
+                {trackingIds.length > 0 ? (
+                  <div>
+                    <label className="text-sm text-green-700 dark:text-green-300">
+                      Tracking ID{trackingIds.length > 1 ? 's' : ''}
+                    </label>
+                    <div className="space-y-2 mt-1">
+                      {trackingIds.map((trackingId, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <p className="text-base font-medium font-mono text-green-900 dark:text-green-50 mr-8">
+                            {trackingId}
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleCopyTracking(trackingId, index)}
+                            className="h-8 w-8 p-0 flex-shrink-0 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-100 dark:hover:bg-green-900"
+                          >
+                            {copiedIndex === index ? (
+                              <Check className="h-4 w-4 text-green-600" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </Button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <label className="text-sm text-green-700 dark:text-green-300">Tracking ID</label>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                  Awaiting shipment
-                </p>
-              </div>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="text-sm text-green-700 dark:text-green-300">Tracking ID</label>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                      Awaiting shipment
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
         
-        {/* Inbound Shipment */}
+        {/* Inbound Shipment - Show for both Single Site and Direct to Patient */}
         <div className="p-4 bg-blue-50 dark:bg-blue-950 rounded-xl border-2 border-blue-200 dark:border-blue-900">
           <div className="flex items-center gap-2 mb-3">
             <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -146,8 +163,8 @@ export function FulfillmentCard({
         </div>
       </CardContent>
 
-      {/* Outbound Tracking Modal */}
-      {trackingIds.length > 0 && (
+      {/* Outbound Tracking Modal - Only for Single Site */}
+      {!isDirectToPatient && trackingIds.length > 0 && (
         <OutboundTrackingModal
           open={trackingModalOpen}
           onOpenChange={setTrackingModalOpen}
