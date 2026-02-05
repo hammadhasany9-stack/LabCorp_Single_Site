@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-export type StatusFilter = 'all' | 'in_progress' | 'shipped' | 'cancelled'
+export type StatusFilter = 'all' | 'in_progress' | 'shipped' | 'cancelled' | 'approved'
 
 interface StatusTabsProps {
   activeStatus: StatusFilter
@@ -11,16 +11,26 @@ interface StatusTabsProps {
     in_progress: number
     shipped: number
     cancelled: number
+    approved?: number
   }
+  includeApproved?: boolean
 }
 
-export function StatusTabs({ activeStatus, onStatusChange, counts }: StatusTabsProps) {
-  const tabs: { value: StatusFilter; label: string }[] = [
-    { value: 'all', label: 'All' },
-    { value: 'in_progress', label: 'In Progress' },
-    { value: 'shipped', label: 'Shipped' },
-    { value: 'cancelled', label: 'Cancelled' }
-  ]
+export function StatusTabs({ activeStatus, onStatusChange, counts, includeApproved = false }: StatusTabsProps) {
+  const tabs: { value: StatusFilter; label: string }[] = includeApproved
+    ? [
+        { value: 'all', label: 'All' },
+        { value: 'approved', label: 'Approved' },
+        { value: 'in_progress', label: 'In Progress' },
+        { value: 'shipped', label: 'Shipped' },
+        { value: 'cancelled', label: 'Cancelled' }
+      ]
+    : [
+        { value: 'all', label: 'All' },
+        { value: 'in_progress', label: 'In Progress' },
+        { value: 'shipped', label: 'Shipped' },
+        { value: 'cancelled', label: 'Cancelled' }
+      ]
 
   return (
     <div className="flex flex-wrap gap-1">

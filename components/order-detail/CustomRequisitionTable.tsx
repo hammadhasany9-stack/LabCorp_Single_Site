@@ -25,7 +25,7 @@ import { format } from 'date-fns'
 
 interface CustomRequisitionTableProps {
   requisitions: CustomRequisition[]
-  orderStatus: 'in_progress' | 'shipped' | 'cancelled'
+  orderStatus: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   siteGroup?: SiteGroup
   orderId?: string
 }
@@ -281,6 +281,7 @@ export function CustomRequisitionTable({ requisitions, orderStatus, siteGroup, o
           requisitions={requisitions}
           initialIndex={selectedIndex}
           carrierType="USPS"
+          shouldShowPatientData={shouldShowPatientData}
         />
       ) : (
         <TrackingModal

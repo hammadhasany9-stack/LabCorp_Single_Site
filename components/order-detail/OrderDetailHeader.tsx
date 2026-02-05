@@ -11,22 +11,30 @@ import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 
 interface OrderDetailHeaderProps {
   orderId: string
-  status: 'in_progress' | 'shipped' | 'cancelled'
+  status: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   onExportCSV: () => void
   onExportXLS: () => void
+  backRoute?: string
 }
 
 export function OrderDetailHeader({
   orderId,
   status,
   onExportCSV,
-  onExportXLS
+  onExportXLS,
+  backRoute
 }: OrderDetailHeaderProps) {
   const router = useRouter()
   const { currentSiteGroup } = useSiteGroupContext()
   
   const handleBackToOrderHistory = () => {
-    // Route to the correct portal based on current site group
+    // If a custom back route is provided, use it
+    if (backRoute) {
+      router.push(backRoute)
+      return
+    }
+    
+    // Otherwise, route to the correct portal based on current site group
     const portalPath = currentSiteGroup === SITE_GROUPS.DIRECT_TO_PATIENT 
       ? '/programs/direct-to-patient' 
       : '/programs/single-site'
@@ -54,7 +62,8 @@ export function OrderDetailHeader({
               variant={getStatusVariant(status)}
               className={cn(
                 status === 'shipped' && 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
-                status === 'in_progress' && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400'
+                status === 'in_progress' && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400',
+                status === 'approved' && 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400'
               )}
             >
               {getStatusLabel(status)}

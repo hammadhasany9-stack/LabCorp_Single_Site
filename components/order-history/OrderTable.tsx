@@ -102,13 +102,13 @@ export function OrderTable({
                     <TableCell className="font-mono text-sm pl-10 pr-0">{order.billingAccountNo}</TableCell>
                     <TableCell className="pr-0 pl-0 text-center">
                       <Badge 
-                        variant={getStatusVariant(order.status)}
+                        variant={getStatusVariant(order.status === 'approved' ? 'in_progress' : order.status)}
                         className={cn(
                           order.status === 'shipped' && 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900',
-                          order.status === 'in_progress' && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900'
+                          (order.status === 'in_progress' || order.status === 'approved') && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900'
                         )}
                       >
-                        {getStatusLabel(order.status)}
+                        {order.status === 'approved' ? getStatusLabel('in_progress') : getStatusLabel(order.status)}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-mono pr-0 pl-0 text-center text-sm">{order.orderNo}</TableCell>

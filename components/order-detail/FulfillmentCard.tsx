@@ -13,7 +13,7 @@ interface FulfillmentCardProps {
   outboundTrackingId?: string
   outboundTrackingIds?: string[]
   inboundCarrier: string
-  orderStatus: 'in_progress' | 'shipped' | 'cancelled'
+  orderStatus: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   siteGroup?: SiteGroup
 }
 

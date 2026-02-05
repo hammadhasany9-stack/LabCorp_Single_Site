@@ -10,37 +10,22 @@ import { OrderDetailsCard } from '@/components/order-detail/OrderDetailsCard'
 import { ReturnAddressCard } from '@/components/order-detail/ReturnAddressCard'
 import { FulfillmentCard } from '@/components/order-detail/FulfillmentCard'
 import { CustomRequisitionTable } from '@/components/order-detail/CustomRequisitionTable'
-import { SingleSiteUnifiedTrackingModal } from '@/components/order-detail/SingleSiteUnifiedTrackingModal'
 import { getOrderDetailById } from '@/lib/data'
 import { OrderDetail } from '@/lib/types/order-detail'
 import { exportOrderDetailToCSV, exportOrderDetailToXLS } from '@/lib/utils/orderDetailHelpers'
-import { useSessionContext } from '@/lib/hooks/useSessionContext'
-import { useSiteGroupContext } from '@/lib/hooks/useSiteGroupContext'
-import { verifyOrderOwnership } from '@/lib/utils/dataFilters'
 import { AlertCircle, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-export default function OrderDetailPage() {
+export default function LCOrderDetailPage() {
   const params = useParams()
   const router = useRouter()
   const orderId = params.orderId as string
-  const { activeCustomerId, isLoading: sessionLoading } = useSessionContext()
-  const { currentSiteGroup } = useSiteGroupContext()
   
   const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  
-  // Unified tracking modal state
-  const [trackingModalOpen, setTrackingModalOpen] = useState(false)
-  const [trackingModalTab, setTrackingModalTab] = useState<'outbound' | 'inbound'>('outbound')
-  const [outboundTrackingIndex, setOutboundTrackingIndex] = useState(0)
-  const [inboundTrackingIndex, setInboundTrackingIndex] = useState(0)
 
   useEffect(() => {
-    // Wait for session to load
-    if (sessionLoading) return
-    
     // Simulate loading and fetch order details
     setIsLoading(true)
     setError(null)
@@ -55,21 +40,13 @@ export default function OrderDetailPage() {
         return
       }
       
-      // Verify ownership and site group match
-      const hasAccess = verifyOrderOwnership(order, activeCustomerId)
-      const siteGroupMatches = order.siteGroup === currentSiteGroup
-      if (!hasAccess || !siteGroupMatches) {
-        setError('Access denied: You do not have permission to view this order')
-        setIsLoading(false)
-        return
-      }
-      
+      // LC Dashboard can view all orders regardless of customer or site group
       setOrderDetail(order)
       setIsLoading(false)
     }, 300)
     
     return () => clearTimeout(timer)
-  }, [orderId, activeCustomerId, sessionLoading, currentSiteGroup])
+  }, [orderId])
 
   const handleExportCSV = () => {
     if (!orderDetail) return
@@ -79,20 +56,6 @@ export default function OrderDetailPage() {
   const handleExportXLS = () => {
     if (!orderDetail) return
     exportOrderDetailToXLS(orderDetail)
-  }
-
-  // Handle opening unified tracking modal for outbound
-  const handleTrackOutbound = () => {
-    setTrackingModalTab('outbound')
-    setOutboundTrackingIndex(0)
-    setTrackingModalOpen(true)
-  }
-
-  // Handle opening unified tracking modal for inbound
-  const handleTrackInbound = (index: number) => {
-    setTrackingModalTab('inbound')
-    setInboundTrackingIndex(index)
-    setTrackingModalOpen(true)
   }
 
   // Loading state
@@ -122,20 +85,23 @@ export default function OrderDetailPage() {
               Order Not Found
             </h2>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              The order with ID "{orderId}" could not be found. It may have been removed or the ID may be incorrect.
+              The order with ID "{orderId}" could not be found or you don't have permission to view it.
             </p>
             <Button
-              onClick={() => router.push('/programs/single-site/order-history')}
+              onClick={() => router.push('/lc-orders/dashboard')}
               className="gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back to Order History
+              Back to LC Orders Dashboard
             </Button>
           </div>
         </div>
       </main>
     )
   }
+
+  // Determine layout based on site group
+  const isDirectToPatient = orderDetail.siteGroup === 'Direct to Patient'
 
   // Main content
   return (
@@ -146,10 +112,11 @@ export default function OrderDetailPage() {
         status={orderDetail.status}
         onExportCSV={handleExportCSV}
         onExportXLS={handleExportXLS}
+        backRoute="/lc-orders/dashboard"
       />
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 ${isDirectToPatient ? 'mb-6' : ''}`}>
         {/* LEFT COLUMN */}
         <div className="space-y-6">
           {/* Client Details */}
@@ -179,33 +146,36 @@ export default function OrderDetailPage() {
             specialInstructions={orderDetail.specialInstructions}
           />
 
-          {/* Order Details */}
-          <OrderDetailsCard
-            orderDate={orderDetail.orderDate}
-            dateApproved={orderDetail.dateApproved}
-            shippedDate={orderDetail.shippedDate}
-            kitNumber={orderDetail.kitNumber}
-            labTicket={orderDetail.labTicket}
-            kitName={orderDetail.kitName}
-            kitPackaging={orderDetail.kitPackaging}
-            quantity={orderDetail.quantity}
-            letterPrint={orderDetail.letterPrint}
-            trfTemplate={orderDetail.trfTemplate}
-            kitInstructions={orderDetail.kitInstructions}
-            labAddress={orderDetail.labAddress}
-            labCity={orderDetail.labCity}
-            labState={orderDetail.labState}
-            labZip={orderDetail.labZip}
-          />
+          {/* Single Site: Order Details in left column */}
+          {!isDirectToPatient && (
+            <>
+              <OrderDetailsCard
+                orderDate={orderDetail.orderDate}
+                dateApproved={orderDetail.dateApproved}
+                shippedDate={orderDetail.shippedDate}
+                kitNumber={orderDetail.kitNumber}
+                labTicket={orderDetail.labTicket}
+                kitName={orderDetail.kitName}
+                kitPackaging={orderDetail.kitPackaging}
+                quantity={orderDetail.quantity}
+                letterPrint={orderDetail.letterPrint}
+                trfTemplate={orderDetail.trfTemplate}
+                kitInstructions={orderDetail.kitInstructions}
+                labAddress={orderDetail.labAddress}
+                labCity={orderDetail.labCity}
+                labState={orderDetail.labState}
+                labZip={orderDetail.labZip}
+              />
 
-          {/* Return Address */}
-          <ReturnAddressCard
-            returnAttn={orderDetail.returnAttn}
-            returnAddress={orderDetail.returnAddress}
-            returnCity={orderDetail.returnCity}
-            returnState={orderDetail.returnState}
-            returnZip={orderDetail.returnZip}
-          />
+              <ReturnAddressCard
+                returnAttn={orderDetail.returnAttn}
+                returnAddress={orderDetail.returnAddress}
+                returnCity={orderDetail.returnCity}
+                returnState={orderDetail.returnState}
+                returnZip={orderDetail.returnZip}
+              />
+            </>
+          )}
         </div>
 
         {/* RIGHT COLUMN */}
@@ -220,15 +190,58 @@ export default function OrderDetailPage() {
             siteGroup={orderDetail.siteGroup}
           />
 
-          {/* Custom Requisition Table */}
-          <CustomRequisitionTable
-            requisitions={orderDetail.customRequisitions}
-            orderStatus={orderDetail.status}
-            siteGroup={orderDetail.siteGroup}
-            orderId={orderDetail.orderId}
-          />
+          {/* Direct to Patient: Order Details & Return Address in right column */}
+          {isDirectToPatient && (
+            <>
+              <OrderDetailsCard
+                orderDate={orderDetail.orderDate}
+                dateApproved={orderDetail.dateApproved}
+                shippedDate={orderDetail.shippedDate}
+                kitNumber={orderDetail.kitNumber}
+                labTicket={orderDetail.labTicket}
+                kitName={orderDetail.kitName}
+                kitPackaging={orderDetail.kitPackaging}
+                quantity={orderDetail.quantity}
+                letterPrint={orderDetail.letterPrint}
+                trfTemplate={orderDetail.trfTemplate}
+                kitInstructions={orderDetail.kitInstructions}
+                labAddress={orderDetail.labAddress}
+                labCity={orderDetail.labCity}
+                labState={orderDetail.labState}
+                labZip={orderDetail.labZip}
+              />
+
+              <ReturnAddressCard
+                returnAttn={orderDetail.returnAttn}
+                returnAddress={orderDetail.returnAddress}
+                returnCity={orderDetail.returnCity}
+                returnState={orderDetail.returnState}
+                returnZip={orderDetail.returnZip}
+              />
+            </>
+          )}
+
+          {/* Single Site: Custom Requisition Table in right column */}
+          {!isDirectToPatient && (
+            <CustomRequisitionTable
+              requisitions={orderDetail.customRequisitions}
+              orderStatus={orderDetail.status}
+              siteGroup={orderDetail.siteGroup}
+              orderId={orderDetail.orderId}
+            />
+          )}
         </div>
       </div>
+
+      {/* Direct to Patient: Full-width Custom Requisition Table at bottom */}
+      {isDirectToPatient && (
+        <CustomRequisitionTable
+          requisitions={orderDetail.customRequisitions}
+          orderStatus={orderDetail.status}
+          siteGroup={orderDetail.siteGroup}
+          orderId={orderDetail.orderId}
+        />
+      )}
     </main>
   )
 }

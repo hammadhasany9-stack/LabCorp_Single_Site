@@ -33,7 +33,7 @@ export function DashboardCard({ title, icon: Icon, description, href }: Dashboar
         <div className="font-semibold">
           <Button 
             variant="ghost"
-            className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 font-semibold px-0 py-4 text-sm rounded-xl transition-all duration-300 align-bottom"
+            className="flex items-center justify-center gap-1 text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 font-semibold px-0 py-4 text-sm transition-all duration-300 align-bottom"
             style={{ verticalAlign: 'bottom' }}
           >
             Open Module

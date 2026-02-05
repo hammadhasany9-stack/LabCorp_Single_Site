@@ -11,7 +11,7 @@ interface ClientDetailsCardProps {
   planState: string
   planZip: string
   billingAccountNo: string
-  status: 'in_progress' | 'shipped' | 'cancelled'
+  status: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
 }
 
 export function ClientDetailsCard({
@@ -63,7 +63,8 @@ export function ClientDetailsCard({
               variant={getStatusVariant(status)}
               className={cn(
                 status === 'shipped' && 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-400',
-                status === 'in_progress' && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400'
+                status === 'in_progress' && 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-400',
+                status === 'approved' && 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-400'
               )}
             >
               {getStatusLabel(status)}

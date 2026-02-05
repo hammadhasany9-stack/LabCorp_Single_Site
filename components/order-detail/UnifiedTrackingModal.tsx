@@ -6,6 +6,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { Copy, Check, Truck, Package, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -20,6 +27,7 @@ interface UnifiedTrackingModalProps {
   requisitions: CustomRequisition[]
   initialIndex?: number
   carrierType?: string
+  shouldShowPatientData?: boolean
 }
 
 // Generate mock tracking data for outbound shipment
@@ -55,7 +63,8 @@ export function UnifiedTrackingModal({
   onOpenChange,
   requisitions,
   initialIndex = 0,
-  carrierType = 'USPS'
+  carrierType = 'USPS',
+  shouldShowPatientData = true
 }: UnifiedTrackingModalProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const [copiedOutbound, setCopiedOutbound] = useState(false)
@@ -82,6 +91,15 @@ export function UnifiedTrackingModal({
     setCurrentIndex((prev) => (prev < requisitions.length - 1 ? prev + 1 : 0))
     setCopiedOutbound(false)
     setCopiedInbound(false)
+  }
+
+  const handleControlIdChange = (controlId: string) => {
+    const index = requisitions.findIndex(req => req.controlId === controlId)
+    if (index !== -1) {
+      setCurrentIndex(index)
+      setCopiedOutbound(false)
+      setCopiedInbound(false)
+    }
   }
 
   const handleCopyOutbound = async () => {
@@ -117,20 +135,20 @@ export function UnifiedTrackingModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="sticky top-0 z-10 w-full py-4 mt-4 flex items-center backdrop-blur-sm dark:backdrop-blur-sm">
-          <div className="flex items-center justify-between gap-6">
+          <div className="flex items-center justify-between gap-4 w-80">
             {/* Navigation Chevron - Left */}
             <Button
               variant="ghost"
               size="icon"
               onClick={handlePrevious}
-              className="h-8 w-8 rounded-xl bg-gray-200 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800"
+              className="h-8 w-8 rounded-xl bg-gray-200 dark:bg-zinc-800 hover:bg-gray-100 dark:hover:bg-zinc-800 flex-shrink-0"
               disabled={requisitions.length <= 1}
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
 
-            {/* Title */}
-            <DialogTitle className="text-xl font-bold text-gray-900 dark:text-gray-50 flex-1 text-center px-8">
+            {/* Title - Centered */}
+            <DialogTitle className="flex-1 text-center text-xl font-bold text-gray-900 dark:text-gray-50">
               Package Tracking
             </DialogTitle>
 
@@ -139,7 +157,7 @@ export function UnifiedTrackingModal({
               variant="ghost"
               size="icon"
               onClick={handleNext}
-              className="h-8 w-8 bg-gray-200 dark:bg-zinc-800 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-800"
+              className="h-8 w-8 bg-gray-200 dark:bg-zinc-800 rounded-xl hover:bg-gray-100 dark:hover:bg-zinc-800 flex-shrink-0"
               disabled={requisitions.length <= 1}
             >
               <ChevronRight className="h-5 w-5" />
@@ -153,11 +171,41 @@ export function UnifiedTrackingModal({
             </p>
           )}
         </DialogHeader>
+
+        {/* Control ID and Carrier Type - Below Header */}
+        {requisitions.length > 1 && (
+          <div className="flex justify-center pt-2 pb-4 border-b border-gray-200 dark:border-zinc-800">
+            <Select value={currentRequisition.controlId} onValueChange={handleControlIdChange}>
+              <SelectTrigger className="w-[300px] h-10">
+                <div className="flex items-center w-full">
+                  <span className="font-mono font-semibold text-sm">{currentRequisition.controlId}</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400 ml-3">
+                    {currentRequisition.carrierType || carrierType}
+                  </span>
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {requisitions.map((req) => (
+                  <SelectItem key={req.controlId} value={req.controlId}>
+                    <div className="flex items-center justify-between gap-4 w-full">
+                      <span className="font-mono font-semibold">{req.controlId}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {req.carrierType || carrierType}
+                      </span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+          </div>
+        )}
         
         <div className="space-y-6 py-2">
           {/* Header Info Section - Control ID and Patient Info */}
-          <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1">
             {/* Control ID */}
+            <div className="flex flex-row gap-28 ">
             <div className="flex items-center gap-3 p-4 bg-gray-50 dark:bg-zinc-900 rounded-xl">
               <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-950 rounded-full flex items-center justify-center">
                 <Package className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -170,10 +218,25 @@ export function UnifiedTrackingModal({
                   {currentRequisition.controlId}
                 </p>
               </div>
+              </div>
+              {/* Carrier Type */}
+              <div className="flex items-center gap-3 p-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center">
+                  <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
+                </div>
+                <div className="flex-1">
+                  <label className="text-xs text-green-700 dark:text-green-300 font-medium uppercase">
+                    Carrier Type
+                  </label>
+                  <p className="text-sm font-semibold text-green-900 dark:text-green-50 mt-0.5">
+                    {carrierType}
+                  </p>
+                </div>
+              </div>
+            
             </div>
-
-            {/* Patient Information (if available) */}
-            {currentRequisition.patientName && (
+            {/* Patient Information (if available and authorized) */}
+            {currentRequisition.patientName && shouldShowPatientData && (
               <div className="p-4 bg-gray-50 dark:bg-zinc-900 rounded-xl">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -210,6 +273,15 @@ export function UnifiedTrackingModal({
                 </div>
               </div>
             )}
+
+            {/* Patient Information Hidden Notice (if not authorized) */}
+            {currentRequisition.patientName && !shouldShowPatientData && (
+              <div className="p-4 bg-amber-50 dark:bg-amber-950 rounded-xl border border-amber-200 dark:border-amber-900">
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  <strong>Patient information hidden.</strong> Please authorize access in the Custom Requisition table to view patient details.
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Tabs for Outbound/Inbound */}
@@ -221,20 +293,7 @@ export function UnifiedTrackingModal({
 
             {/* Outbound Tab Content */}
             <TabsContent value="outbound" className="space-y-6 mt-4">
-              {/* Carrier Type */}
-              <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950 rounded-xl border border-green-200 dark:border-green-900">
-                <div className="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center">
-                  <Truck className="h-5 w-5 text-green-600 dark:text-green-400" />
-                </div>
-                <div className="flex-1">
-                  <label className="text-xs text-green-700 dark:text-green-300 font-medium uppercase">
-                    Carrier Type
-                  </label>
-                  <p className="text-sm font-semibold text-green-900 dark:text-green-50 mt-0.5">
-                    {carrierType}
-                  </p>
-                </div>
-              </div>
+              
 
               {/* Outbound Shipment Title & Tracking ID */}
               <div className="space-y-3">
@@ -314,24 +373,10 @@ export function UnifiedTrackingModal({
             </TabsContent>
 
             {/* Inbound Tab Content */}
-            <TabsContent value="inbound" className="space-y-6 mt-4">
-              {/* Carrier Type */}
-              <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-950 rounded-xl border border-blue-200 dark:border-blue-900">
-                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 dark:bg-blue-950 rounded-full flex items-center justify-center">
-                  <Truck className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div className="flex-1">
-                  <label className="text-xs text-blue-700 dark:text-blue-300 font-medium uppercase">
-                    Carrier Type
-                  </label>
-                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-50 mt-0.5">
-                    {currentRequisition.carrierType || carrierType}
-                  </p>
-                </div>
-              </div>
+            <TabsContent value="inbound" className="space-y-6 mt-6">
 
               {/* Inbound Shipment Title & Tracking ID */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-50 uppercase tracking-wide">
                   Inbound Shipment to Lab
                 </h3>

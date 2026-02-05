@@ -16,16 +16,18 @@ export const formatOrderTimeOnly = (date: Date): string => {
   return format(etDate, 'hh:mm a')
 }
 
-export const getStatusVariant = (status: string): 'default' | 'secondary' | 'destructive' => {
+export const getStatusVariant = (status: string): 'default' | 'secondary' | 'destructive' | 'success' => {
   switch (status) {
     case 'shipped':
-      return 'default'
+      return 'success'
     case 'in_progress':
-      return 'secondary'
+      return 'default'
     case 'cancelled':
       return 'destructive'
-    default:
+    case 'approved':
       return 'secondary'
+    default:
+      return 'default'
   }
 }
 
@@ -37,6 +39,8 @@ export const getStatusLabel = (status: string): string => {
       return 'Shipped'
     case 'cancelled':
       return 'Cancelled'
+    case 'approved':
+      return 'Approved'
     default:
       return status
   }

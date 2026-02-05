@@ -68,10 +68,104 @@ export const getOrderDetailsBySiteGroup = (siteGroup: string): OrderDetail[] => 
 /**
  * Get a specific order detail by order ID (searches across all portals)
  * @param orderId - The order ID to search for
+ * If full order details don't exist, generates basic details from order history
  */
 export const getOrderDetailById = (orderId: string): OrderDetail | undefined => {
+  // First, try to get the full order details
   const allDetails = getAllOrderDetails()
-  return allDetails.find(order => order.orderId === orderId)
+  const foundDetail = allDetails.find(order => order.orderId === orderId)
+  
+  if (foundDetail) {
+    return foundDetail
+  }
+  
+  // If not found, generate basic order detail from order history
+  const allOrders = getAllOrders()
+  const orderHistory = allOrders.find(order => order.orderId === orderId)
+  
+  if (!orderHistory) {
+    return undefined
+  }
+  
+  // Generate basic order detail from order history item
+  const basicOrderDetail: OrderDetail = {
+    orderId: orderHistory.orderId,
+    orderNo: orderHistory.orderNo,
+    status: orderHistory.status,
+    siteGroup: orderHistory.siteGroup,
+    customerId: orderHistory.customerId,
+    orderDate: orderHistory.orderDate,
+    dateApproved: orderHistory.status === 'approved' || orderHistory.status === 'shipped' ? orderHistory.orderDate : undefined,
+    shippedDate: orderHistory.shippedDate,
+    
+    // Client Details
+    planName: orderHistory.planName,
+    planAddress: '123 Healthcare Ave',
+    planCity: orderHistory.location.split(', ')[0],
+    planState: orderHistory.location.split(', ')[1] || '',
+    planZip: '00000',
+    billingAccountNo: orderHistory.billingAccountNo,
+    
+    // Contact Info
+    contactName: 'Contact Person',
+    contactPhone: '(000) 000-0000',
+    contactAddress: orderHistory.streetAddress || '123 Healthcare Ave',
+    specialInstructions: undefined,
+    
+    // Kit Details
+    kitId: orderHistory.kitId,
+    kitName: orderHistory.kitName,
+    kitSku: `SKU-${orderHistory.kitId}`,
+    kitPackaging: 'Standard Box',
+    quantity: orderHistory.quantity,
+    kitInstructions: undefined,
+    trfTemplate: undefined,
+    letterPrint: true,
+    
+    // Order Details
+    kitNumber: `KN-${orderHistory.orderId}`,
+    labTicket: `LT-${orderHistory.orderId}`,
+    orderNotes: undefined,
+    
+    // Lab Address
+    labAddress: '1447 York Court',
+    labCity: 'Burlington',
+    labState: 'NC',
+    labZip: '27215',
+    
+    // Return Address
+    returnAttn: 'LabCorp Receiving Department',
+    returnAddress: '531 South Spring Street',
+    returnCity: 'Burlington',
+    returnState: 'NC',
+    returnZip: '27215',
+    
+    // Fulfillment & Tracking
+    outboundCarrier: 'FedEx',
+    outboundTrackingId: orderHistory.shippedDate ? '1Z999AA10123456784' : undefined,
+    outboundTrackingIds: orderHistory.shippedDate ? ['1Z999AA10123456784'] : undefined,
+    inboundCarrier: 'USPS',
+    
+    // Custom Requisitions - generate basic ones
+    customRequisitions: Array.from({ length: orderHistory.quantity }, (_, i) => ({
+      controlId: `${orderHistory.orderId}-${String(i + 1).padStart(3, '0')}`,
+      inboundTrackingId: `9${Math.floor(Math.random() * 9000000000000000 + 1000000000000000)}`,
+      carrierType: 'USPS',
+      currentStatus: 'label_created' as const,
+      trackingSteps: [
+        {
+          status: 'label_created' as const,
+          timestamp: orderHistory.orderDate
+        }
+      ]
+    })),
+    
+    // Location
+    location: orderHistory.location,
+    fulfillmentDestination: orderHistory.fulfillmentDestination
+  }
+  
+  return basicOrderDetail
 }
 
 /**

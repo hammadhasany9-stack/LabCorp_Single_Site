@@ -1,6 +1,7 @@
 import { OrderHistoryItem, OrderMetrics } from '@/lib/types/order-history'
 import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 import { OrderDetail, CustomRequisition, TrackingStatus, TrackingStep } from '@/lib/types/order-detail'
+import { addOrderItemsToOrders } from './mockOrderItems'
 
 // SOW and Product Type mappings
 const SOW_OPTIONS = [
@@ -135,7 +136,7 @@ const generateCustomRequisitions = (
   return requisitions
 }
 
-export const mockOrderHistoryDTP: OrderHistoryItem[] = [
+const mockOrderHistoryDTPBase: OrderHistoryItem[] = [
   {
     orderId: 'DTP-20240201-001',
     orderNo: 'DTP-ORD-2024-001',
@@ -150,7 +151,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'DTP IFOBT Home Kit',
     quantity: 30,
     trackingId: '9400110200830123456789',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240203-002',
@@ -164,7 +166,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-A1C-002',
     kitName: 'Home A1c Test Kit',
     quantity: 45,
-    location: 'Houston, TX'
+    location: 'Houston, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240205-003',
@@ -180,7 +183,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Direct Albumin Urine Kit',
     quantity: 25,
     trackingId: '9400110200830123456790',
-    location: 'Orlando, FL'
+    location: 'Orlando, FL',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240207-004',
@@ -194,7 +198,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-ADV-004',
     kitName: 'AdvanceDx Home Serum Kit',
     quantity: 15,
-    location: 'Phoenix, AZ'
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240210-005',
@@ -210,7 +215,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Patient IFOBT Collection Kit',
     quantity: 40,
     trackingId: '9400110200830123456791',
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240212-006',
@@ -224,7 +230,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-A1C-006',
     kitName: 'DTP A1c Whatman Kit',
     quantity: 35,
-    location: 'Denver, CO'
+    location: 'Denver, CO',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240215-007',
@@ -240,7 +247,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Home Albumin Test',
     quantity: 50,
     trackingId: '9400110200830123456792',
-    location: 'Portland, OR'
+    location: 'Portland, OR',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240218-008',
@@ -254,7 +262,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-ADV-008',
     kitName: 'Patient AdvanceDx Kit',
     quantity: 20,
-    location: 'Atlanta, GA'
+    location: 'Atlanta, GA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240220-009',
@@ -270,7 +279,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'DTP Home IFOBT Kit',
     quantity: 60,
     trackingId: '9400110200830123456793',
-    location: 'Minneapolis, MN'
+    location: 'Minneapolis, MN',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240222-010',
@@ -286,7 +296,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Home A1c Collection Kit',
     quantity: 45,
     trackingId: '9400110200830123456794',
-    location: 'San Diego, CA'
+    location: 'San Diego, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240225-011',
@@ -300,7 +311,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-ALB-011',
     kitName: 'Patient Albumin Urine Test',
     quantity: 25,
-    location: 'Austin, TX'
+    location: 'Austin, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240227-012',
@@ -314,7 +326,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-ADV-012',
     kitName: 'DTP AdvanceDx Serum',
     quantity: 30,
-    location: 'Tampa, FL'
+    location: 'Tampa, FL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240301-013',
@@ -330,7 +343,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Home IFOBT Test Kit',
     quantity: 55,
     trackingId: '9400110200830123456795',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240305-014',
@@ -346,7 +360,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Patient A1c Whatman Kit',
     quantity: 40,
     trackingId: '9400110200830123456796',
-    location: 'Phoenix, AZ'
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240308-015',
@@ -360,7 +375,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-ALB-015',
     kitName: 'DTP Albumin Test Kit',
     quantity: 35,
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240312-016',
@@ -376,7 +392,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Home AdvanceDx Kit',
     quantity: 28,
     trackingId: '9400110200830123456797',
-    location: 'Portland, OR'
+    location: 'Portland, OR',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240315-017',
@@ -392,7 +409,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Patient IFOBT Home Kit',
     quantity: 50,
     trackingId: '9400110200830123456798',
-    location: 'Minneapolis, MN'
+    location: 'Minneapolis, MN',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240318-018',
@@ -406,7 +424,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitId: 'KIT-DTP-A1C-018',
     kitName: 'DTP A1c Home Test',
     quantity: 32,
-    location: 'Austin, TX'
+    location: 'Austin, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'DTP-20240322-019',
@@ -422,7 +441,8 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Home Albumin Collection Kit',
     quantity: 42,
     trackingId: '9400110200830123456799',
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'DTP-20240325-020',
@@ -438,12 +458,155 @@ export const mockOrderHistoryDTP: OrderHistoryItem[] = [
     kitName: 'Patient AdvanceDx Serum Kit',
     quantity: 38,
     trackingId: '9400110200830123456800',
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'DTP-20240328-021',
+    orderNo: 'DTP-ORD-2024-021',
+    planName: 'Home Care Advantage',
+    billingAccountNo: 'DTP-BA-200021',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-001',
+    orderDate: new Date('2026-01-28T10:00:00'),
+    kitId: 'KIT-DTP-IFOBT-021',
+    kitName: 'DTP IFOBT Home Kit',
+    quantity: 60,
+    location: 'Los Angeles, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'DTP-20240330-022',
+    orderNo: 'DTP-ORD-2024-022',
+    planName: 'Patient Wellness Direct',
+    billingAccountNo: 'DTP-BA-200022',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-002',
+    orderDate: new Date('2026-01-30T14:20:00'),
+    kitId: 'KIT-DTP-A1C-022',
+    kitName: 'Patient A1c Whatman Kit',
+    quantity: 48,
+    location: 'Chicago, IL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'DTP-20240401-023',
+    orderNo: 'DTP-ORD-2024-023',
+    planName: 'Direct Patient Care Plus',
+    billingAccountNo: 'DTP-BA-200023',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-004',
+    orderDate: new Date('2026-02-01T09:30:00'),
+    kitId: 'KIT-DTP-ALB-023',
+    kitName: 'DTP Albumin Test Kit',
+    quantity: 36,
+    location: 'Denver, CO',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'DTP-20240403-024',
+    orderNo: 'DTP-ORD-2024-024',
+    planName: 'Home Health Solutions',
+    billingAccountNo: 'DTP-BA-200024',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-005',
+    orderDate: new Date('2026-02-03T11:45:00'),
+    kitId: 'KIT-DTP-ADV-024',
+    kitName: 'Home AdvanceDx Kit',
+    quantity: 52,
+    location: 'Miami, FL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'DTP-20260204-025',
+    orderNo: 'DTP-ORD-2026-025',
+    planName: 'Patient Direct Care',
+    billingAccountNo: 'DTP-BA-200025',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-001',
+    orderDate: new Date('2026-02-04T09:30:00'),
+    kitId: 'KIT-DTP-IFOBT-025',
+    kitName: 'Home IFOBT Collection Kit',
+    quantity: 65,
+    location: 'San Diego, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'DTP-20260204-026',
+    orderNo: 'DTP-ORD-2026-026',
+    planName: 'Home Testing Program',
+    billingAccountNo: 'DTP-BA-200026',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-002',
+    orderDate: new Date('2026-02-04T13:15:00'),
+    kitId: 'KIT-DTP-A1C-026',
+    kitName: 'DTP A1c Whatman Kit',
+    quantity: 48,
+    location: 'Portland, OR',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'DTP-20260203-027',
+    orderNo: 'DTP-ORD-2026-027',
+    planName: 'Direct Patient Services',
+    billingAccountNo: 'DTP-BA-200027',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-003',
+    orderDate: new Date('2026-02-03T10:00:00'),
+    kitId: 'KIT-DTP-ALB-027',
+    kitName: 'Direct Albumin Urine Kit',
+    quantity: 38,
+    location: 'Las Vegas, NV',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'DTP-20260202-028',
+    orderNo: 'DTP-ORD-2026-028',
+    planName: 'Home Health Direct',
+    billingAccountNo: 'DTP-BA-200028',
+    siteGroup: SITE_GROUPS.DIRECT_TO_PATIENT,
+    status: 'approved',
+    customerId: 'DTP-CUST-004',
+    orderDate: new Date('2026-02-02T15:20:00'),
+    kitId: 'KIT-DTP-ADV-028',
+    kitName: 'Home AdvanceDx Kit',
+    quantity: 72,
+    location: 'Austin, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
 ]
 
+// Helper function to add timestamps to orders
+function addTimestampsToOrders<T extends { orderDate: Date; orderId: string }>(orders: T[]): T[] {
+  return orders.map(order => {
+    const createdAt = order.orderDate
+    // Mock updatedAt as 1-5 hours after creation (deterministic based on orderId)
+    const updatedAt = new Date(createdAt)
+    // Use orderId hash to generate deterministic offset (1-5 hours)
+    const hash = order.orderId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    const hoursOffset = (hash % 5) + 1
+    updatedAt.setHours(updatedAt.getHours() + hoursOffset)
+    
+    return {
+      ...order,
+      createdAt,
+      updatedAt
+    }
+  })
+}
+
+// Export with timestamps added first, then order items (so items inherit parent timestamps)
+export const mockOrderHistoryDTP: OrderHistoryItem[] = addOrderItemsToOrders(addTimestampsToOrders(mockOrderHistoryDTPBase))
+
 // Order details for each order (for the detail page)
-export const mockOrderDetailsDTP: OrderDetail[] = mockOrderHistoryDTP.map((order) => {
+export const mockOrderDetailsDTP: OrderDetail[] = mockOrderHistoryDTPBase.map((order) => {
   const sow = getRandomSOW()
   const productType = getRandomProductType()
   const fileNumber = `F-DTP-${order.orderId.split('-')[1]}`

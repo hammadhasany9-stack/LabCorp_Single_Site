@@ -1,6 +1,7 @@
 import { OrderHistoryItem, OrderMetrics } from '@/lib/types/order-history'
 import { SITE_GROUPS } from '@/lib/constants/siteGroups'
 import { OrderDetail, CustomRequisition, TrackingStatus, TrackingStep } from '@/lib/types/order-detail'
+import { addOrderItemsToOrders } from './mockOrderItems'
 
 // SOW and Product Type mappings
 const SOW_OPTIONS = [
@@ -88,7 +89,7 @@ const generateCustomRequisitions = (
   return requisitions
 }
 
-export const mockOrderHistory: OrderHistoryItem[] = [
+const mockOrderHistoryBase: OrderHistoryItem[] = [
   {
     orderId: 'SS-20240115-001',
     orderNo: 'ORD-2024-001',
@@ -103,7 +104,9 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'IFOBT Collection Kit',
     quantity: 50,
     trackingId: '1Z999AA10123456784',
-    location: 'New York, NY'
+    location: 'New York, NY',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '350 Fifth Avenue'
   },
   {
     orderId: 'SS-20240116-002',
@@ -117,7 +120,9 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-A1C-002',
     kitName: 'A1c Whatman Test Kit',
     quantity: 100,
-    location: 'Los Angeles, CA'
+    location: 'Los Angeles, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '1800 Wilshire Boulevard'
   },
   {
     orderId: 'SS-20240117-003',
@@ -133,7 +138,9 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'Albumin Urine Test',
     quantity: 75,
     trackingId: '1Z999AA10123456785',
-    location: 'Chicago, IL'
+    location: 'Chicago, IL',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '233 South Wacker Drive'
   },
   {
     orderId: 'SS-20240118-004',
@@ -147,7 +154,9 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-ADV-004',
     kitName: 'AdvanceDx Serum Kit',
     quantity: 30,
-    location: 'Houston, TX'
+    location: 'Houston, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '1600 Smith Street'
   },
   {
     orderId: 'SS-20240119-005',
@@ -163,7 +172,9 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'IFOBT Collection Kit',
     quantity: 120,
     trackingId: '1Z999AA10123456786',
-    location: 'Phoenix, AZ'
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '2398 East Camelback Road'
   },
   {
     orderId: 'SS-20240120-006',
@@ -177,7 +188,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-A1C-006',
     kitName: 'A1c Whatman Test Kit',
     quantity: 85,
-    location: 'Philadelphia, PA'
+    location: 'Philadelphia, PA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240121-007',
@@ -193,7 +205,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'Albumin Urine Test',
     quantity: 60,
     trackingId: '1Z999AA10123456787',
-    location: 'San Antonio, TX'
+    location: 'San Antonio, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240122-008',
@@ -209,7 +222,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'AdvanceDx Serum Kit',
     quantity: 45,
     trackingId: '1Z999AA10123456788',
-    location: 'San Diego, CA'
+    location: 'San Diego, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240123-009',
@@ -223,7 +237,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-IFOBT-009',
     kitName: 'IFOBT Collection Kit',
     quantity: 90,
-    location: 'Dallas, TX'
+    location: 'Dallas, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240124-010',
@@ -239,7 +254,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'A1c Whatman Test Kit',
     quantity: 110,
     trackingId: '1Z999AA10123456789',
-    location: 'San Jose, CA'
+    location: 'San Jose, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240125-011',
@@ -253,7 +269,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-ALB-011',
     kitName: 'Albumin Urine Test',
     quantity: 25,
-    location: 'Austin, TX'
+    location: 'Austin, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240126-012',
@@ -269,7 +286,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'AdvanceDx Serum Kit',
     quantity: 70,
     trackingId: '1Z999AA10123456790',
-    location: 'Jacksonville, FL'
+    location: 'Jacksonville, FL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240127-013',
@@ -283,7 +301,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-IFOBT-013',
     kitName: 'IFOBT Collection Kit',
     quantity: 95,
-    location: 'Fort Worth, TX'
+    location: 'Fort Worth, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240128-014',
@@ -299,7 +318,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'A1c Whatman Test Kit',
     quantity: 80,
     trackingId: '1Z999AA10123456791',
-    location: 'Columbus, OH'
+    location: 'Columbus, OH',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240129-015',
@@ -315,7 +335,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'Albumin Urine Test',
     quantity: 55,
     trackingId: '1Z999AA10123456792',
-    location: 'Charlotte, NC'
+    location: 'Charlotte, NC',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240130-016',
@@ -329,7 +350,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-ADV-016',
     kitName: 'AdvanceDx Serum Kit',
     quantity: 65,
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240131-017',
@@ -345,7 +367,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'IFOBT Collection Kit',
     quantity: 105,
     trackingId: '1Z999AA10123456793',
-    location: 'Indianapolis, IN'
+    location: 'Indianapolis, IN',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240201-018',
@@ -359,7 +382,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-A1C-018',
     kitName: 'A1c Whatman Test Kit',
     quantity: 40,
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240202-019',
@@ -375,7 +399,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'Albumin Urine Test',
     quantity: 88,
     trackingId: '1Z999AA10123456794',
-    location: 'Denver, CO'
+    location: 'Denver, CO',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240203-020',
@@ -389,7 +414,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-ADV-020',
     kitName: 'AdvanceDx Serum Kit',
     quantity: 72,
-    location: 'Washington, DC'
+    location: 'Washington, DC',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240204-021',
@@ -405,7 +431,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'IFOBT Collection Kit',
     quantity: 115,
     trackingId: '1Z999AA10123456795',
-    location: 'Boston, MA'
+    location: 'Boston, MA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240205-022',
@@ -421,7 +448,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'A1c Whatman Test Kit',
     quantity: 92,
     trackingId: '1Z999AA10123456796',
-    location: 'El Paso, TX'
+    location: 'El Paso, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240206-023',
@@ -435,7 +463,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitId: 'KIT-ALB-023',
     kitName: 'Albumin Urine Test',
     quantity: 68,
-    location: 'Nashville, TN'
+    location: 'Nashville, TN',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240207-024',
@@ -451,7 +480,8 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'AdvanceDx Serum Kit',
     quantity: 58,
     trackingId: '1Z999AA10123456797',
-    location: 'Detroit, MI'
+    location: 'Detroit, MI',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240208-025',
@@ -467,9 +497,192 @@ export const mockOrderHistory: OrderHistoryItem[] = [
     kitName: 'IFOBT Collection Kit',
     quantity: 125,
     trackingId: '1Z999AA10123456798',
-    location: 'Memphis, TN'
+    location: 'Memphis, TN',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'SS-20240209-026-APPROVED',
+    orderNo: 'ORD-2026-026',
+    planName: 'Anthem Health Plans',
+    billingAccountNo: 'BA-107789',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-001',
+    orderDate: new Date('2026-02-01T10:00:00'),
+    kitId: 'KIT-A1C-026',
+    kitName: 'A1c Whatman Test Kit',
+    quantity: 45,
+    location: 'Atlanta, GA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '456 Anthem Way'
+  },
+  {
+    orderId: 'SS-20240210-027-APPROVED',
+    orderNo: 'ORD-2026-027',
+    planName: 'UnitedHealth Group',
+    billingAccountNo: 'BA-108012',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-005',
+    orderDate: new Date('2026-01-31T14:30:00'),
+    kitId: 'KIT-IFOBT-027',
+    kitName: 'IFOBT Collection Kit',
+    quantity: 80,
+    location: 'Boston, MA',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '1 International Place'
+  },
+  {
+    orderId: 'SS-20240211-028-APPROVED',
+    orderNo: 'ORD-2026-028',
+    planName: 'Humana Medicare Advantage',
+    billingAccountNo: 'BA-108345',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-008',
+    orderDate: new Date('2026-01-30T09:15:00'),
+    kitId: 'KIT-ALB-028',
+    kitName: 'Albumin Urine Test',
+    quantity: 32,
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '2398 East Camelback Road'
+  },
+  {
+    orderId: 'SS-20240212-029-APPROVED',
+    orderNo: 'ORD-2026-029',
+    planName: 'Cigna Healthcare',
+    billingAccountNo: 'BA-108678',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-010',
+    orderDate: new Date('2026-01-29T11:45:00'),
+    kitId: 'KIT-ADV-029',
+    kitName: 'AdvanceDx Serum Kit',
+    quantity: 55,
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '1201 Third Avenue'
+  },
+  {
+    orderId: 'SS-20260204-030',
+    orderNo: 'ORD-2026-030',
+    planName: 'Kaiser Permanente',
+    billingAccountNo: 'BA-109123',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-001',
+    orderDate: new Date('2026-02-04T08:30:00'),
+    kitId: 'KIT-IFOBT-030',
+    kitName: 'IFOBT Test Kit',
+    quantity: 150,
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '555 California Street'
+  },
+  {
+    orderId: 'SS-20260204-031',
+    orderNo: 'ORD-2026-031',
+    planName: 'UnitedHealthcare',
+    billingAccountNo: 'BA-109456',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-002',
+    orderDate: new Date('2026-02-04T09:20:00'),
+    kitId: 'KIT-A1C-031',
+    kitName: 'A1c Whatman Test Kit',
+    quantity: 200,
+    location: 'Denver, CO',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '1801 California Street'
+  },
+  {
+    orderId: 'SS-20260204-032',
+    orderNo: 'ORD-2026-032',
+    planName: 'Aetna Health Plans',
+    billingAccountNo: 'BA-109789',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-003',
+    orderDate: new Date('2026-02-04T11:00:00'),
+    kitId: 'KIT-ALB-032',
+    kitName: 'Albumin Urine Test',
+    quantity: 75,
+    location: 'Miami, FL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '100 Southeast 2nd Street'
+  },
+  {
+    orderId: 'SS-20260203-033',
+    orderNo: 'ORD-2026-033',
+    planName: 'Blue Cross Blue Shield',
+    billingAccountNo: 'BA-110012',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-004',
+    orderDate: new Date('2026-02-03T13:15:00'),
+    kitId: 'KIT-ADV-033',
+    kitName: 'AdvanceDx Serum Kit',
+    quantity: 120,
+    location: 'Boston, MA',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '1 International Place'
+  },
+  {
+    orderId: 'SS-20260203-034',
+    orderNo: 'ORD-2026-034',
+    planName: 'Anthem Health Plans',
+    billingAccountNo: 'BA-110345',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-005',
+    orderDate: new Date('2026-02-03T10:30:00'),
+    kitId: 'KIT-IFOBT-034',
+    kitName: 'IFOBT Test Kit',
+    quantity: 90,
+    location: 'Atlanta, GA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+    streetAddress: '456 Anthem Way'
+  },
+  {
+    orderId: 'SS-20260202-035',
+    orderNo: 'ORD-2026-035',
+    planName: 'Humana Medicare Advantage',
+    billingAccountNo: 'BA-110678',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-006',
+    orderDate: new Date('2026-02-02T15:45:00'),
+    kitId: 'KIT-A1C-035',
+    kitName: 'A1c Whatman Test Kit',
+    quantity: 110,
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'Ditek-Windsor',
+    streetAddress: '2398 East Camelback Road'
   }
 ]
+
+// Helper function to add timestamps to orders
+function addTimestampsToOrders<T extends { orderDate: Date; orderId: string }>(orders: T[]): T[] {
+  return orders.map(order => {
+    const createdAt = order.orderDate
+    // Mock updatedAt as 1-5 hours after creation (deterministic based on orderId)
+    const updatedAt = new Date(createdAt)
+    // Use orderId hash to generate deterministic offset (1-5 hours)
+    const hash = order.orderId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+    const hoursOffset = (hash % 5) + 1
+    updatedAt.setHours(updatedAt.getHours() + hoursOffset)
+    
+    return {
+      ...order,
+      createdAt,
+      updatedAt
+    }
+  })
+}
+
+// Export with timestamps added first, then order items (so items inherit parent timestamps)
+export const mockOrderHistory: OrderHistoryItem[] = addOrderItemsToOrders(addTimestampsToOrders(mockOrderHistoryBase))
 
 export const calculateMetrics = (orders: OrderHistoryItem[]): OrderMetrics => {
   const today = new Date()
@@ -543,7 +756,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240115-001', 50, new Date('2024-01-15T09:30:00'), '12011', '1', 'IFOBT', '1', 'Employer'),
-    location: 'New York, NY'
+    location: 'New York, NY',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240116-002',
@@ -591,7 +805,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240116-002', 100, new Date('2024-01-16T11:15:00'), '12011', '2', 'A1c Whatman', '2', 'Managed Care'),
-    location: 'Los Angeles, CA'
+    location: 'Los Angeles, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240117-003',
@@ -641,7 +856,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240117-003', 75, new Date('2024-01-17T08:45:00'), '12011', '3', 'Albumin Urine', '3', 'VBC'),
-    location: 'Chicago, IL'
+    location: 'Chicago, IL',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240118-004',
@@ -688,7 +904,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240118-004', 30, new Date('2024-01-18T14:00:00'), '12011', '4', 'AdvanceDx Serum', '1', 'Employer'),
-    location: 'Houston, TX'
+    location: 'Houston, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240119-005',
@@ -739,7 +956,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240119-005', 120, new Date('2024-01-19T10:20:00'), '12011', '1', 'IFOBT', '2', 'Managed Care'),
-    location: 'Phoenix, AZ'
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240120-006',
@@ -787,7 +1005,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240120-006', 85, new Date('2024-01-20T13:10:00'), '12011', '2', 'A1c Whatman', '3', 'VBC'),
-    location: 'Philadelphia, PA'
+    location: 'Philadelphia, PA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240121-007',
@@ -837,7 +1056,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240121-007', 60, new Date('2024-01-21T09:00:00'), '12011', '3', 'Albumin Urine', '1', 'Employer'),
-    location: 'San Antonio, TX'
+    location: 'San Antonio, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240122-008',
@@ -888,7 +1108,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240122-008', 45, new Date('2024-01-22T11:30:00'), '12011', '4', 'AdvanceDx Serum', '2', 'Managed Care'),
-    location: 'San Diego, CA'
+    location: 'San Diego, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240123-009',
@@ -935,7 +1156,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240123-009', 90, new Date('2024-01-23T15:45:00'), '12011', '1', 'IFOBT', '3', 'VBC'),
-    location: 'Dallas, TX'
+    location: 'Dallas, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240124-010',
@@ -986,7 +1208,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240124-010', 110, new Date('2024-01-24T08:30:00'), '12011', '2', 'A1c Whatman', '1', 'Employer'),
-    location: 'San Jose, CA'
+    location: 'San Jose, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240125-011',
@@ -1033,7 +1256,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240125-011', 25, new Date('2024-01-25T12:00:00'), '12011', '3', 'Albumin Urine', '2', 'Managed Care'),
-    location: 'Austin, TX'
+    location: 'Austin, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240126-012',
@@ -1083,7 +1307,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240126-012', 70, new Date('2024-01-26T10:45:00'), '12011', '4', 'AdvanceDx Serum', '3', 'VBC'),
-    location: 'Jacksonville, FL'
+    location: 'Jacksonville, FL',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240127-013',
@@ -1131,7 +1356,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240127-013', 95, new Date('2024-01-27T14:20:00'), '12011', '1', 'IFOBT', '1', 'Employer'),
-    location: 'Fort Worth, TX'
+    location: 'Fort Worth, TX',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240128-014',
@@ -1181,7 +1407,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240128-014', 80, new Date('2024-01-28T09:15:00'), '12011', '2', 'A1c Whatman', '2', 'Managed Care'),
-    location: 'Columbus, OH'
+    location: 'Columbus, OH',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240129-015',
@@ -1232,7 +1459,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240129-015', 55, new Date('2024-01-29T11:00:00'), '12011', '3', 'Albumin Urine', '3', 'VBC'),
-    location: 'Charlotte, NC'
+    location: 'Charlotte, NC',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240130-016',
@@ -1279,7 +1507,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240130-016', 65, new Date('2024-01-30T13:30:00'), '12011', '4', 'AdvanceDx Serum', '1', 'Employer'),
-    location: 'San Francisco, CA'
+    location: 'San Francisco, CA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240131-017',
@@ -1330,7 +1559,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240131-017', 105, new Date('2024-01-31T08:45:00'), '12011', '1', 'IFOBT', '2', 'Managed Care'),
-    location: 'Indianapolis, IN'
+    location: 'Indianapolis, IN',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240201-018',
@@ -1377,7 +1607,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240201-018', 40, new Date('2024-02-01T10:00:00'), '12011', '2', 'A1c Whatman', '3', 'VBC'),
-    location: 'Seattle, WA'
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240202-019',
@@ -1427,7 +1658,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240202-019', 88, new Date('2024-02-02T12:15:00'), '12011', '3', 'Albumin Urine', '1', 'Employer'),
-    location: 'Denver, CO'
+    location: 'Denver, CO',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240203-020',
@@ -1475,7 +1707,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240203-020', 72, new Date('2024-02-03T14:30:00'), '12011', '4', 'AdvanceDx Serum', '2', 'Managed Care'),
-    location: 'Washington, DC'
+    location: 'Washington, DC',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240204-021',
@@ -1526,7 +1759,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240204-021', 115, new Date('2024-02-04T09:30:00'), '12011', '1', 'IFOBT', '3', 'VBC'),
-    location: 'Boston, MA'
+    location: 'Boston, MA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240205-022',
@@ -1576,7 +1810,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240205-022', 92, new Date('2024-02-05T11:45:00'), '12011', '2', 'A1c Whatman', '1', 'Employer'),
-    location: 'El Paso, TX'
+    location: 'El Paso, TX',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240206-023',
@@ -1623,7 +1858,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '2',
     productTypeLabel: 'Managed Care',
     customRequisitions: generateCustomRequisitions('SS-20240206-023', 68, new Date('2024-02-06T13:00:00'), '12011', '3', 'Albumin Urine', '2', 'Managed Care'),
-    location: 'Nashville, TN'
+    location: 'Nashville, TN',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   },
   {
     orderId: 'SS-20240207-024',
@@ -1674,7 +1910,8 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '3',
     productTypeLabel: 'VBC',
     customRequisitions: generateCustomRequisitions('SS-20240207-024', 58, new Date('2024-02-07T15:20:00'), '12011', '4', 'AdvanceDx Serum', '3', 'VBC'),
-    location: 'Detroit, MI'
+    location: 'Detroit, MI',
+    fulfillmentDestination: 'Ditek-Windsor',
   },
   {
     orderId: 'SS-20240208-025',
@@ -1725,7 +1962,200 @@ export const mockOrderDetails: OrderDetail[] = [
     productType: '1',
     productTypeLabel: 'Employer',
     customRequisitions: generateCustomRequisitions('SS-20240208-025', 125, new Date('2024-02-08T08:00:00'), '12011', '1', 'IFOBT', '1', 'Employer'),
-    location: 'Memphis, TN'
+    location: 'Memphis, TN',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'SS-20240209-026',
+    orderNo: 'ORD-2024-026',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-001',
+    orderDate: new Date('2026-02-01T10:00:00'),
+    dateApproved: new Date('2026-02-01T13:30:00'),
+    planName: 'Anthem Health Plans',
+    planAddress: '456 Anthem Way',
+    planCity: 'Atlanta',
+    planState: 'GA',
+    planZip: '30301',
+    billingAccountNo: 'BA-107789',
+    contactName: 'Jennifer Davis',
+    contactPhone: '(404) 555-0456',
+    contactAddress: '456 Anthem Way, Building 3',
+    specialInstructions: 'Call before delivery',
+    kitId: 'KIT-A1C-026',
+    kitName: 'A1c Whatman Test Kit',
+    kitSku: 'SKU-A1C-2024-026',
+    kitPackaging: 'Temperature Controlled',
+    quantity: 45,
+    kitInstructions: 'Keep refrigerated between 2-8°C. Do not freeze.',
+    trfTemplate: 'TRF-A1C-Standard',
+    letterPrint: true,
+    kitNumber: 'KN-2024-026-001',
+    labTicket: 'LT-2024-026',
+    labAddress: '1447 York Court',
+    labCity: 'Burlington',
+    labState: 'NC',
+    labZip: '27215',
+    returnAttn: 'LabCorp Receiving Department',
+    returnAddress: '531 South Spring Street',
+    returnCity: 'Burlington',
+    returnState: 'NC',
+    returnZip: '27215',
+    outboundCarrier: 'FedEx',
+    inboundCarrier: 'USPS',
+    fileNumber: '12012',
+    sowNumber: '2',
+    sowLabel: 'A1c Whatman',
+    productType: '1',
+    productTypeLabel: 'Employer',
+    customRequisitions: generateCustomRequisitions('SS-20240209-026', 45, new Date('2024-02-09T12:00:00'), '12012', '2', 'A1c Whatman', '1', 'Employer'),
+    location: 'Atlanta, GA',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'SS-20240210-027',
+    orderNo: 'ORD-2024-027',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-005',
+    orderDate: new Date('2026-01-31T14:30:00'),
+    dateApproved: new Date('2024-02-10T17:00:00'),
+    planName: 'UnitedHealth Group',
+    planAddress: '789 United Plaza',
+    planCity: 'Boston',
+    planState: 'MA',
+    planZip: '02101',
+    billingAccountNo: 'BA-108012',
+    contactName: 'Michael Chen',
+    contactPhone: '(617) 555-0789',
+    contactAddress: '789 United Plaza, Suite 500',
+    specialInstructions: 'Use loading dock B',
+    kitId: 'KIT-IFOBT-027',
+    kitName: 'IFOBT Collection Kit',
+    kitSku: 'SKU-IFOBT-2024-027',
+    kitPackaging: 'Standard Box',
+    quantity: 80,
+    kitInstructions: 'Store in cool, dry place. Use within 6 months.',
+    trfTemplate: 'TRF-IFOBT-Standard',
+    letterPrint: false,
+    kitNumber: 'KN-2024-027-001',
+    labTicket: 'LT-2024-027',
+    labAddress: '1447 York Court',
+    labCity: 'Burlington',
+    labState: 'NC',
+    labZip: '27215',
+    returnAttn: 'LabCorp Receiving Department',
+    returnAddress: '531 South Spring Street',
+    returnCity: 'Burlington',
+    returnState: 'NC',
+    returnZip: '27215',
+    outboundCarrier: 'FedEx',
+    inboundCarrier: 'USPS',
+    fileNumber: '12012',
+    sowNumber: '1',
+    sowLabel: 'IFOBT',
+    productType: '2',
+    productTypeLabel: 'Managed Care',
+    customRequisitions: generateCustomRequisitions('SS-20240210-027', 80, new Date('2024-02-10T16:00:00'), '12012', '1', 'IFOBT', '2', 'Managed Care'),
+    location: 'Boston, MA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
+  },
+  {
+    orderId: 'SS-20240211-028',
+    orderNo: 'ORD-2024-028',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-008',
+    orderDate: new Date('2026-01-30T09:15:00'),
+    dateApproved: new Date('2024-02-11T12:45:00'),
+    planName: 'Humana Medicare Advantage',
+    planAddress: '321 Humana Boulevard',
+    planCity: 'Phoenix',
+    planState: 'AZ',
+    planZip: '85001',
+    billingAccountNo: 'BA-108345',
+    contactName: 'Sarah Martinez',
+    contactPhone: '(602) 555-0321',
+    contactAddress: '321 Humana Boulevard, Floor 2',
+    specialInstructions: 'Security clearance required',
+    kitId: 'KIT-ALB-028',
+    kitName: 'Albumin Urine Test',
+    kitSku: 'SKU-ALB-2024-028',
+    kitPackaging: 'Standard Box',
+    quantity: 32,
+    kitInstructions: 'Protect from light. Use within 12 months.',
+    trfTemplate: 'TRF-ALB-Standard',
+    letterPrint: true,
+    kitNumber: 'KN-2024-028-001',
+    labTicket: 'LT-2024-028',
+    labAddress: '1447 York Court',
+    labCity: 'Burlington',
+    labState: 'NC',
+    labZip: '27215',
+    returnAttn: 'LabCorp Receiving Department',
+    returnAddress: '531 South Spring Street',
+    returnCity: 'Burlington',
+    returnState: 'NC',
+    returnZip: '27215',
+    outboundCarrier: 'FedEx',
+    inboundCarrier: 'USPS',
+    fileNumber: '12012',
+    sowNumber: '3',
+    sowLabel: 'Albumin Urine',
+    productType: '3',
+    productTypeLabel: 'VBC',
+    customRequisitions: generateCustomRequisitions('SS-20240211-028', 32, new Date('2024-02-11T11:00:00'), '12012', '3', 'Albumin Urine', '3', 'VBC'),
+    location: 'Phoenix, AZ',
+    fulfillmentDestination: 'Ditek-Windsor',
+  },
+  {
+    orderId: 'SS-20240212-029',
+    orderNo: 'ORD-2024-029',
+    siteGroup: SITE_GROUPS.SINGLE_SITE,
+    status: 'approved',
+    customerId: 'CUST-010',
+    orderDate: new Date('2026-01-29T11:45:00'),
+    dateApproved: new Date('2024-02-12T15:15:00'),
+    planName: 'Cigna Healthcare',
+    planAddress: '654 Cigna Center',
+    planCity: 'Seattle',
+    planState: 'WA',
+    planZip: '98101',
+    billingAccountNo: 'BA-108678',
+    contactName: 'Robert Anderson',
+    contactPhone: '(206) 555-0654',
+    contactAddress: '654 Cigna Center, Tower B',
+    specialInstructions: 'Schedule delivery in advance',
+    kitId: 'KIT-ADV-029',
+    kitName: 'AdvanceDx Serum Kit',
+    kitSku: 'SKU-ADV-2024-029',
+    kitPackaging: 'Biohazard Safe',
+    quantity: 55,
+    kitInstructions: 'Handle with care. Biohazard protocols apply.',
+    trfTemplate: 'TRF-ADV-Standard',
+    letterPrint: false,
+    kitNumber: 'KN-2024-029-001',
+    labTicket: 'LT-2024-029',
+    labAddress: '1447 York Court',
+    labCity: 'Burlington',
+    labState: 'NC',
+    labZip: '27215',
+    returnAttn: 'LabCorp Receiving Department',
+    returnAddress: '531 South Spring Street',
+    returnCity: 'Burlington',
+    returnState: 'NC',
+    returnZip: '27215',
+    outboundCarrier: 'FedEx',
+    inboundCarrier: 'USPS',
+    fileNumber: '12012',
+    sowNumber: '4',
+    sowLabel: 'AdvanceDx Serum',
+    productType: '1',
+    productTypeLabel: 'Employer',
+    customRequisitions: generateCustomRequisitions('SS-20240212-029', 55, new Date('2024-02-12T13:30:00'), '12012', '4', 'AdvanceDx Serum', '1', 'Employer'),
+    location: 'Seattle, WA',
+    fulfillmentDestination: 'DYAD-King of Prussia',
   }
 ]
 

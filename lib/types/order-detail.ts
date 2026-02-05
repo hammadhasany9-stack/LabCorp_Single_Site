@@ -33,7 +33,7 @@ export interface OrderDetail {
   // Basic Order Info
   orderId: string
   orderNo: string
-  status: 'in_progress' | 'shipped' | 'cancelled'
+  status: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   siteGroup: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   customerId: string // Associated customer ID
   orderDate: Date

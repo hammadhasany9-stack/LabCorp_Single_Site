@@ -1,12 +1,13 @@
 import { Timestamp } from "next/dist/server/lib/cache-handlers/types"
 import { SiteGroup } from '@/lib/constants/siteGroups'
+import { OrderItem } from './order-item'
 
 export interface OrderHistoryItem {
   orderId: string
   orderNo: string
   planName: string
   billingAccountNo: string
-  status: 'in_progress' | 'shipped' | 'cancelled'
+  status: 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   siteGroup: SiteGroup // Portal identifier (Single Site or Direct to Patient)
   customerId: string // Associated customer ID
   orderDate: Date
@@ -18,6 +19,11 @@ export interface OrderHistoryItem {
   quantity: number
   trackingId?: string
   location: string
+  streetAddress?: string // Street address for Single Site orders
+  fulfillmentDestination?: string // Fulfillment destination (Ditek-Windsor or DYAD-King of Prussia)
+  orderItems?: OrderItem[] // Order items with asset information
+  createdAt?: Date // Created timestamp
+  updatedAt?: Date // Updated timestamp
 }
 
 export interface KitTypeOption {
@@ -42,7 +48,7 @@ export type DateRangePreset = 'last_30' | 'last_60' | 'last_90' | 'custom'
 
 export interface OrderHistoryFilters {
   search?: string
-  status?: 'all' | 'in_progress' | 'shipped' | 'cancelled'
+  status?: 'all' | 'in_progress' | 'shipped' | 'cancelled' | 'approved'
   dateRange?: {
     from?: Date
     to?: Date
