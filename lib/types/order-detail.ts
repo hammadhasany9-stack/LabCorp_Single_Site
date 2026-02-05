@@ -100,6 +100,7 @@ export interface OrderDetail {
   
   // Location
   location: string
+  fulfillmentDestination?: string // Fulfillment destination (Ditek-Windsor or DYAD-King of Prussia)
 }
 
 export function getOrderDetailById(orderId: string): OrderDetail | undefined {
